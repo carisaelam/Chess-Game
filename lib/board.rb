@@ -1,8 +1,34 @@
+# frozen_string_literal: true
+
+# prints and updates board
 class Board
-  attr_accessor :board
+  attr_reader :board
+
+  BOARD_SIZE = 8
+  DARK_COLOR = 46
+  LIGHT_COLOR = 47
 
   def initialize
-    @board = build_that_board
+    @board = initialize_board
+  end
+
+  def initialize_board
+    built_board = []
+
+    BOARD_SIZE.times do |i|
+      row_order = i.even? ? 'even' : 'odd'
+      built_board << build_row(row_order)
+    end
+
+    built_board
+  end
+
+  def dark
+    DARK_COLOR
+  end
+
+  def light
+    LIGHT_COLOR
   end
 
   def print_square(square)
@@ -13,42 +39,33 @@ class Board
     [color, piece]
   end
 
-  def build_array_line(modifier)
-    result = []
-
-    8.times do |i|
-      color_code = (if modifier == 'even'
-                      i.even? ? 46 : 47
-                    else
-                      (i.odd? ? 46 : 47)
-                    end)
-      result << square(color_code)
+  def color_for_square(index, row_order)
+    if (row_order == 'odd' && index.even?) || (row_order != 'odd' && index.odd?)
+      dark
+    else
+      light
     end
-
-    result # Return the array of squares
   end
 
-  def build_that_board
-    built_board = []
+  def build_row(row_order)
+    row = []
 
-    8.times do |i|
-      modifier = i.even? ? 'even' : 'odd'
-      built_board << build_array_line(modifier)
+    BOARD_SIZE.times do |i|
+      color = color_for_square(i, row_order)
+      row << square(color)
     end
 
-    built_board
+    row
   end
 
-  # Print the board
-  def draw_board(board)
+  def draw_board
     board.each do |row|
-      row.each { |square| print print_square(square) } # Destructure the array for print_square
-      puts # Move to the next line after printing each row
+      row.each { |square| print print_square(square) }
+      puts
     end
   end
 end
 
-# empty_board = Board.new
-# board = empty_board.build_that_board
-
-# empty_board.draw_board(board)
+# board = Board.new
+# pp board
+# board.draw_board
