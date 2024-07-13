@@ -3,10 +3,6 @@
 require_relative '../lib/board'
 
 RSpec.describe Board do
-  # DRAW_BOARD
-  # [ ] draws an empty board
-  # [ ] draws a board with a symbol in a particular space
-
   describe '#draw_board' do
     context 'when the board is empty' do
       subject(:empty_board) { described_class.new }
@@ -156,6 +152,99 @@ RSpec.describe Board do
         actual_output = one_piece_board.draw_board
 
         expect(actual_output).to eq(expected_output)
+      end
+    end
+  end
+
+  describe '#starting_positions' do
+    context 'when the board is in starting position' do
+      subject(:full_board) { described_class.new }
+      it 'displays all pieces in starting positions' do
+        full_board.starting_positions
+        expected_output = [[[47, '♜'],
+                            [46, '♞'],
+                            [47, '♝'],
+                            [46, '♛'],
+                            [47, '♚'],
+                            [46, '♝'],
+                            [47, '♞'],
+                            [46, '♜']],
+                           [[46, '♟'],
+                            [47, '♟'],
+                            [46, '♟'],
+                            [47, '♟'],
+                            [46, '♟'],
+                            [47, '♟'],
+                            [46, '♟'],
+                            [47, '♟']],
+                           [[47, ' '],
+                            [46, ' '],
+                            [47, ' '],
+                            [46, ' '],
+                            [47, ' '],
+                            [46, ' '],
+                            [47, ' '],
+                            [46, ' ']],
+                           [[46, ' '],
+                            [47, ' '],
+                            [46, ' '],
+                            [47, ' '],
+                            [46, ' '],
+                            [47, ' '],
+                            [46, ' '],
+                            [47, ' ']],
+                           [[47, ' '],
+                            [46, ' '],
+                            [47, ' '],
+                            [46, ' '],
+                            [47, ' '],
+                            [46, ' '],
+                            [47, ' '],
+                            [46, ' ']],
+                           [[46, ' '],
+                            [47, ' '],
+                            [46, ' '],
+                            [47, ' '],
+                            [46, ' '],
+                            [47, ' '],
+                            [46, ' '],
+                            [47, ' ']],
+                           [[47, '♙'],
+                            [46, '♙'],
+                            [47, '♙'],
+                            [46, '♙'],
+                            [47, '♙'],
+                            [46, '♙'],
+                            [47, '♙'],
+                            [46, '♙']],
+                           [[46, '♖'],
+                            [47, '♘'],
+                            [46, '♗'],
+                            [47, '♕'],
+                            [46, '♔'],
+                            [47, '♗'],
+                            [46, '♘'],
+                            [47, '♖']]]
+
+        expect(full_board.board).to eq(expected_output)
+        full_board.draw_board
+      end
+    end
+  end
+
+  describe '#move_piece' do
+    context 'moving pawn from starting position' do
+      subject(:pawn_move) { described_class.new }
+      before do
+        pawn_move.starting_positions
+        p 'before move'
+        pawn_move.draw_board
+      end
+      it 'will move the white pawn up one' do
+        pawn_move.move_piece([6, 0], [5, 0])
+        expect(pawn_move.board[5][0][1]).to eq('♙')
+        p 'after move'
+        pawn_move.draw_board
       end
     end
   end

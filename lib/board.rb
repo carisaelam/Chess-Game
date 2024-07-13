@@ -21,11 +21,18 @@ class Board
     white_bishop: "\u2657",
     white_knight: "\u2658",
     white_pawn: "\u2659"
-  }
+  }.freeze
 
   def initialize
     @board = initialize_board
-    starting_positions
+  end
+
+  def draw_board
+    build_letter_rows
+    board.each do |row|
+      row.each { |square| print print_square(square) }
+      puts
+    end
   end
 
   def starting_positions
@@ -67,6 +74,20 @@ class Board
     board[6][7][1] = piece_codes[:white_pawn]
   end
 
+  def move_piece(start_position, end_position)
+    # copies start_position piece onto the end_position piece
+    board[end_position[0]][end_position[1]][1] = board[start_position[0]][start_position[1]][1]
+
+    # clears piece from start_position
+    board[start_position[0]][start_position[1]][1] = ' '
+  end
+
+  private
+
+  def build_letter_rows
+    print " a  b  c  d  e  f  g  h\n"
+  end
+
   def initialize_board
     built_board = []
 
@@ -74,7 +95,6 @@ class Board
       row_order = i.even? ? 'even' : 'odd'
       built_board << build_row(row_order)
     end
-
     built_board
   end
 
@@ -116,15 +136,19 @@ class Board
 
     row
   end
-
-  def draw_board
-    board.each do |row|
-      row.each { |square| print print_square(square) }
-      puts
-    end
-  end
 end
 
-board = Board.new
+# board = Board.new
+# board.starting_positions
+# pp board.board
 
-board.draw_board
+# # MOVING PIECES...
+
+# # copies piece to goal square
+# board.board[5][0][1] = board.board[6][0][1]
+
+# # clears start square of piece
+# board.board[6][0][1] = ' '
+
+# pp board.board
+# board.draw_board
