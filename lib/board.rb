@@ -25,6 +25,46 @@ class Board
 
   def initialize
     @board = initialize_board
+    starting_positions
+  end
+
+  def starting_positions
+    # black pieces (top)
+    board[0][0][1] = piece_codes[:black_rook]
+    board[0][1][1] = piece_codes[:black_knight]
+    board[0][2][1] = piece_codes[:black_bishop]
+    board[0][3][1] = piece_codes[:black_queen]
+    board[0][4][1] = piece_codes[:black_king]
+    board[0][5][1] = piece_codes[:black_bishop]
+    board[0][6][1] = piece_codes[:black_knight]
+    board[0][7][1] = piece_codes[:black_rook]
+    board[1][0][1] = piece_codes[:black_pawn]
+    board[1][1][1] = piece_codes[:black_pawn]
+    board[1][2][1] = piece_codes[:black_pawn]
+    board[1][3][1] = piece_codes[:black_pawn]
+    board[1][4][1] = piece_codes[:black_pawn]
+    board[1][5][1] = piece_codes[:black_pawn]
+    board[1][6][1] = piece_codes[:black_pawn]
+    board[1][7][1] = piece_codes[:black_pawn]
+
+    # white pieces (bottom)
+    board[7][0][1] = piece_codes[:white_rook]
+    board[7][1][1] = piece_codes[:white_knight]
+    board[7][2][1] = piece_codes[:white_bishop]
+    board[7][3][1] = piece_codes[:white_queen]
+    board[7][4][1] = piece_codes[:white_king]
+    board[7][5][1] = piece_codes[:white_bishop]
+    board[7][6][1] = piece_codes[:white_knight]
+    board[7][7][1] = piece_codes[:white_rook]
+    board[7][7][1] = piece_codes[:white_rook]
+    board[6][0][1] = piece_codes[:white_pawn]
+    board[6][1][1] = piece_codes[:white_pawn]
+    board[6][2][1] = piece_codes[:white_pawn]
+    board[6][3][1] = piece_codes[:white_pawn]
+    board[6][4][1] = piece_codes[:white_pawn]
+    board[6][5][1] = piece_codes[:white_pawn]
+    board[6][6][1] = piece_codes[:white_pawn]
+    board[6][7][1] = piece_codes[:white_pawn]
   end
 
   def initialize_board
@@ -86,12 +126,5 @@ class Board
 end
 
 board = Board.new
-board.board[0][0][1] = board.piece_codes[:white_bishop]
-board.board[0][1][1] = board.piece_codes[:white_queen]
-board.board[1][0][1] = board.piece_codes[:black_knight]
-board.board[1][1][1] = board.piece_codes[:black_pawn]
 
 board.draw_board
-
-puts "\u265A"  # Should display the white king correctly
-puts "\u2654"  # Should display the black king correctly
