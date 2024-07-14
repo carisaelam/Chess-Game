@@ -29,51 +29,24 @@ class Board
     @piece_mover = PieceMover.new(self)
   end
 
-  def draw_board
+  # prints a drawn board between two rows of letters
+  def print_board
     build_letter_rows
-    board.each do |row|
-      row.each { |square| print print_square(square) }
+    draw_board
+    build_letter_rows
+  end
+
+  # creates all of the board squares
+  def draw_board
+    board.each_with_index do |row, index|
+      create_row(row, index)
       puts
     end
   end
 
   def starting_positions
-    # black pieces (top)
-    board[0][0][1] = piece_codes[:black_rook]
-    board[0][1][1] = piece_codes[:black_knight]
-    board[0][2][1] = piece_codes[:black_bishop]
-    board[0][3][1] = piece_codes[:black_queen]
-    board[0][4][1] = piece_codes[:black_king]
-    board[0][5][1] = piece_codes[:black_bishop]
-    board[0][6][1] = piece_codes[:black_knight]
-    board[0][7][1] = piece_codes[:black_rook]
-    board[1][0][1] = piece_codes[:black_pawn]
-    board[1][1][1] = piece_codes[:black_pawn]
-    board[1][2][1] = piece_codes[:black_pawn]
-    board[1][3][1] = piece_codes[:black_pawn]
-    board[1][4][1] = piece_codes[:black_pawn]
-    board[1][5][1] = piece_codes[:black_pawn]
-    board[1][6][1] = piece_codes[:black_pawn]
-    board[1][7][1] = piece_codes[:black_pawn]
-
-    # white pieces (bottom)
-    board[7][0][1] = piece_codes[:white_rook]
-    board[7][1][1] = piece_codes[:white_knight]
-    board[7][2][1] = piece_codes[:white_bishop]
-    board[7][3][1] = piece_codes[:white_queen]
-    board[7][4][1] = piece_codes[:white_king]
-    board[7][5][1] = piece_codes[:white_bishop]
-    board[7][6][1] = piece_codes[:white_knight]
-    board[7][7][1] = piece_codes[:white_rook]
-    board[7][7][1] = piece_codes[:white_rook]
-    board[6][0][1] = piece_codes[:white_pawn]
-    board[6][1][1] = piece_codes[:white_pawn]
-    board[6][2][1] = piece_codes[:white_pawn]
-    board[6][3][1] = piece_codes[:white_pawn]
-    board[6][4][1] = piece_codes[:white_pawn]
-    board[6][5][1] = piece_codes[:white_pawn]
-    board[6][6][1] = piece_codes[:white_pawn]
-    board[6][7][1] = piece_codes[:white_pawn]
+    setup_black_pieces
+    setup_white_pieces
   end
 
   def move_piece(start_position, end_position)
@@ -82,8 +55,44 @@ class Board
 
   private
 
+  def setup_black_pieces
+    place_piece(:black_rook, [0, 0])
+    place_piece(:black_knight, [0, 1])
+    place_piece(:black_bishop, [0, 2])
+    place_piece(:black_queen, [0, 3])
+    place_piece(:black_king, [0, 4])
+    place_piece(:black_bishop, [0, 5])
+    place_piece(:black_knight, [0, 6])
+    place_piece(:black_rook, [0, 7])
+    (0..7).each { |i| place_piece(:black_pawn, [1, i]) }
+  end
+
+  def setup_white_pieces
+    place_piece(:white_rook, [7, 0])
+    place_piece(:white_knight, [7, 1])
+    place_piece(:white_bishop, [7, 2])
+    place_piece(:white_queen, [7, 3])
+    place_piece(:white_king, [7, 4])
+    place_piece(:white_bishop, [7, 5])
+    place_piece(:white_knight, [7, 6])
+    place_piece(:white_rook, [7, 7])
+    (0..7).each { |i| place_piece(:white_pawn, [6, i]) }
+  end
+
+  # helper method to place pieces on board
+  def place_piece(piece_type, position)
+    board[position[0]][position[1]][1] = piece_codes[piece_type]
+  end
+
+  # creates a row of squares in between two rows of numbers
+  def create_row(row, index)
+    print index + 1
+    row.each { |square| print print_square(square) }
+    print index + 1
+  end
+
   def build_letter_rows
-    print " a  b  c  d  e  f  g  h\n"
+    print "  a  b  c  d  e  f  g  h\n"
   end
 
   def initialize_board
@@ -136,20 +145,10 @@ class Board
   end
 end
 
-# board = Board.new
-# board.starting_positions
-# board.draw_board
-# board.move_piece([6, 0], [5, 0])
-# board.draw_board
-# board.draw_board
-
-# # MOVING PIECES...
-
-# # copies piece to goal square
-# board.board[5][0][1] = board.board[6][0][1]
-
-# # clears start square of piece
-# board.board[6][0][1] = ' '
-
-# pp board.board
-# board.draw_board
+board = Board.new
+board.starting_positions
+board.print_board
+board.move_piece([6, 0], [5, 0])
+board.print_board
+board.move_piece([1, 0], [2, 0])
+board.print_board
