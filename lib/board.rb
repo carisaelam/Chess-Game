@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require_relative './piece_mover'
 # prints and updates board
 class Board
   attr_reader :board
@@ -25,6 +26,7 @@ class Board
 
   def initialize
     @board = initialize_board
+    @piece_mover = PieceMover.new(self)
   end
 
   def draw_board
@@ -74,30 +76,8 @@ class Board
     board[6][7][1] = piece_codes[:white_pawn]
   end
 
-  def start_point(start_position)
-    board[start_position[0]][start_position[1]][1]
-  end
-
-  def end_point(end_position)
-    board[end_position[0]][end_position[1]][1]
-  end
-
-  def set_pieces(start_position, end_position)
-    board[end_position[0]][end_position[1]][1] = board[start_position[0]][start_position[1]][1]
-  end
-
-  def clear_pieces(start_position)
-    # clears piece from start_position
-    board[start_position[0]][start_position[1]][1] = ' '
-  end
-
   def move_piece(start_position, end_position)
-    # copies start_position piece onto the end_position piece
-
-    return nil if end_point(end_position) != ' '
-
-    set_pieces(start_position, end_position)
-    clear_pieces(start_position)
+    @piece_mover.move_piece(start_position, end_position)
   end
 
   private
@@ -160,6 +140,7 @@ end
 # board.starting_positions
 # board.draw_board
 # board.move_piece([6, 0], [5, 0])
+# board.draw_board
 # board.draw_board
 
 # # MOVING PIECES...

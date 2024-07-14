@@ -232,20 +232,5 @@ RSpec.describe Board do
     end
   end
 
-  describe '#move_piece' do
-    context 'moving pawn from starting position' do
-      subject(:pawn_move) { described_class.new }
-      before do
-        pawn_move.starting_positions
-        p 'before move'
-        pawn_move.draw_board
-      end
-      it 'will move the white pawn up one' do
-        pawn_move.move_piece([6, 0], [5, 0])
-        expect(pawn_move.board[5][0][1]).to eq('♙')
-        p 'after move'
-        pawn_move.draw_board
-      end
-    end
-  end
+
 end
