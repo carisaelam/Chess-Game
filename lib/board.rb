@@ -53,6 +53,12 @@ class Board
     @piece_mover.move_piece(start_position, end_position)
   end
 
+  ## REMOVE IF NOT NECESSARY
+
+  def convert_from_alg_notation
+    @piece_mover.convert_from_alg_notation
+  end
+
   private
 
   def setup_black_pieces
@@ -86,13 +92,13 @@ class Board
 
   # creates a row of squares in between two rows of numbers
   def create_row(row, index)
-    print index + 1
+    print (index - BOARD_SIZE).abs # prints numbers in descending order as on a chess board
     row.each { |square| print print_square(square) }
-    print index + 1
+    print (index - BOARD_SIZE).abs
   end
 
   def build_letter_rows
-    print "  a  b  c  d  e  f  g  h\n"
+    print "  A  B  C  D  E  F  G  H\n"
   end
 
   def initialize_board
@@ -145,10 +151,23 @@ class Board
   end
 end
 
+# board = Board.new
+# board.starting_positions
+# board.print_board
+# board.move_piece([6, 0], [5, 0])
+# board.print_board
+# board.move_piece([1, 0], [2, 0])
+# board.print_board
+
 board = Board.new
 board.starting_positions
+
+######### START HERE #######################
+## MOVING PIECES BY TYPING IN ALG NOTATION
 board.print_board
-board.move_piece([6, 0], [5, 0])
-board.print_board
-board.move_piece([1, 0], [2, 0])
+typed_position1 = board.convert_from_alg_notation
+typed_position2 = board.convert_from_alg_notation
+
+board.move_piece(typed_position1, typed_position2)
+p 'need a coordinate...'
 board.print_board

@@ -35,14 +35,14 @@ RSpec.describe PieceMover do
       before do
         board.starting_positions
         p 'Before move:'
-        board.draw_board
+        board.print_board
       end
 
       it 'returns nil' do
         result = piece_mover.move_piece([7, 0], [6, 0])
         expect(result).to eq(nil)
         p 'After move:'
-        board.draw_board
+        board.print_board
       end
     end
 
@@ -53,14 +53,14 @@ RSpec.describe PieceMover do
       before do
         board.starting_positions
         p 'Before move:'
-        board.draw_board
+        board.print_board
       end
 
       it 'returns nil' do
         result = out_of_bounds.move_piece([7, 0], [8, 0])
         expect(result).to eq(nil)
         p 'After move:'
-        board.draw_board
+        board.print_board
       end
     end
   end
