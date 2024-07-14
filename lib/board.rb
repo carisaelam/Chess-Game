@@ -74,12 +74,30 @@ class Board
     board[6][7][1] = piece_codes[:white_pawn]
   end
 
-  def move_piece(start_position, end_position)
-    # copies start_position piece onto the end_position piece
-    board[end_position[0]][end_position[1]][1] = board[start_position[0]][start_position[1]][1]
+  def start_point(start_position)
+    board[start_position[0]][start_position[1]][1]
+  end
 
+  def end_point(end_position)
+    board[end_position[0]][end_position[1]][1]
+  end
+
+  def set_pieces(start_position, end_position)
+    board[end_position[0]][end_position[1]][1] = board[start_position[0]][start_position[1]][1]
+  end
+
+  def clear_pieces(start_position)
     # clears piece from start_position
     board[start_position[0]][start_position[1]][1] = ' '
+  end
+
+  def move_piece(start_position, end_position)
+    # copies start_position piece onto the end_position piece
+
+    return nil if end_point(end_position) != ' '
+
+    set_pieces(start_position, end_position)
+    clear_pieces(start_position)
   end
 
   private
@@ -140,7 +158,9 @@ end
 
 # board = Board.new
 # board.starting_positions
-# pp board.board
+# board.draw_board
+# board.move_piece([6, 0], [5, 0])
+# board.draw_board
 
 # # MOVING PIECES...
 
