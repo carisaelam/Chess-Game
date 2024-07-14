@@ -30,7 +30,7 @@ RSpec.describe PieceMover do
 
     context 'when a piece exists in the end position' do
       subject(:piece_mover) { described_class.new(board) }
-      let(:board) { Board.new } # Create a new Board instance here
+      let(:board) { Board.new }
 
       before do
         board.starting_positions
@@ -39,7 +39,25 @@ RSpec.describe PieceMover do
       end
 
       it 'returns nil' do
-        result = piece_mover.move_piece([7, 0], [6, 0]) # Pass Board instance to move_piece
+        result = piece_mover.move_piece([7, 0], [6, 0])
+        expect(result).to eq(nil)
+        p 'After move:'
+        board.draw_board
+      end
+    end
+
+    context 'when end position is outside the board' do
+      subject(:out_of_bounds) { described_class.new(board) }
+      let(:board) { Board.new }
+
+      before do
+        board.starting_positions
+        p 'Before move:'
+        board.draw_board
+      end
+
+      it 'returns nil' do
+        result = out_of_bounds.move_piece([7, 0], [8, 0])
         expect(result).to eq(nil)
         p 'After move:'
         board.draw_board
