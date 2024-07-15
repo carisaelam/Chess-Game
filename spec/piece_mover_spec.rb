@@ -38,9 +38,14 @@ RSpec.describe PieceMover do
         board.print_board
       end
 
-      it 'returns nil' do
+      # eventually will need to send this piece to verify
+      it 'returns piece occupying attempted end position' do
+        end_point_current = board.board[6][0][1]
+        end_point_full = board.board[6][0]
+        p "endpointcurrent: #{end_point_current}"
+        p "endpointfull: #{end_point_full}"
         result = piece_mover.move_piece([7, 0], [6, 0])
-        expect(result).to eq(nil)
+        expect(result).to eq(end_point_current)
         p 'After move:'
         board.print_board
       end

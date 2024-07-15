@@ -145,14 +145,12 @@ end
 # board.move_piece([1, 0], [2, 0])
 # board.print_board
 
-board = Board.new
-board.starting_positions
+# board = Board.new
+# board.starting_positions
 
-######### START HERE #######################
-## MOVING PIECES BY TYPING IN ALG NOTATION
-board.print_board
-typed_position1 = board.convert_from_alg_notation
-typed_position2 = board.convert_from_alg_notation
+# board.print_board
+# typed_position1 = board.convert_from_alg_notation
+# typed_position2 = board.convert_from_alg_notation
 
-board.move_piece(typed_position1, typed_position2)
-board.print_board
+# board.move_piece(typed_position1, typed_position2)
+# board.print_board

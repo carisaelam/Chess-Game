@@ -15,7 +15,6 @@ class PieceMover
     'g' => 6,
     'h' => 7,
 
-    '0' => 8,
     '1' => 7,
     '2' => 6,
     '3' => 5,
@@ -29,27 +28,28 @@ class PieceMover
 
   # copies start_position piece onto the end_position piece
   def move_piece(start_position, end_position)
+    # ensures end_position is on the board
     return nil if check_in_bounds(end_position) == false
 
-    return nil if end_point(end_position) != ' '
+    # ensures end_position is not already taken
+    return end_point(end_position) if end_point(end_position) != ' '
 
     set_pieces(start_position, end_position)
     clear_pieces(start_position)
   end
 
+  # simply collects user input through gets.chomp
   def collect_input
     gets.chomp
   end
 
-  def process_input(string)
-    letter = string[0]
-    number = string[1]
-    [letter, number]
+  def process_coordinate_input(string)
+    [string[0], string[1]]
   end
 
   def convert_from_alg_notation
-    input = process_input(collect_input.downcase)
-    p converted_input = [square_coordinates[input[1]], square_coordinates[input[0]]]
+    input = process_coordinate_input(collect_input.downcase)
+    [square_coordinates[input[1]], square_coordinates[input[0]]]
   end
 
   private
