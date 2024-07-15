@@ -31,9 +31,9 @@ class Board
 
   # prints a drawn board between two rows of letters
   def print_board
-    build_letter_rows
+    print "  A  B  C  D  E  F  G  H\n"
     draw_board
-    build_letter_rows
+    print "  A  B  C  D  E  F  G  H\n"
   end
 
   # creates all of the board squares
@@ -44,45 +44,39 @@ class Board
     end
   end
 
+  # scripts setup black and setup white
   def starting_positions
-    setup_black_pieces
-    setup_white_pieces
+    setup_pieces(:black)
+    setup_pieces(:white)
   end
 
+  # PieceMover main method
   def move_piece(start_position, end_position)
     @piece_mover.move_piece(start_position, end_position)
   end
 
-  ## REMOVE IF NOT NECESSARY
-
+  # PieceMover helper method
   def convert_from_alg_notation
     @piece_mover.convert_from_alg_notation
   end
 
   private
 
-  def setup_black_pieces
-    place_piece(:black_rook, [0, 0])
-    place_piece(:black_knight, [0, 1])
-    place_piece(:black_bishop, [0, 2])
-    place_piece(:black_queen, [0, 3])
-    place_piece(:black_king, [0, 4])
-    place_piece(:black_bishop, [0, 5])
-    place_piece(:black_knight, [0, 6])
-    place_piece(:black_rook, [0, 7])
-    (0..7).each { |i| place_piece(:black_pawn, [1, i]) }
-  end
+  # sets pieces in their starting positions based on color
+  def setup_pieces(color)
+    back_row = color == :black ? 0 : 7
+    front_row = color == :black ? 1 : 6
 
-  def setup_white_pieces
-    place_piece(:white_rook, [7, 0])
-    place_piece(:white_knight, [7, 1])
-    place_piece(:white_bishop, [7, 2])
-    place_piece(:white_queen, [7, 3])
-    place_piece(:white_king, [7, 4])
-    place_piece(:white_bishop, [7, 5])
-    place_piece(:white_knight, [7, 6])
-    place_piece(:white_rook, [7, 7])
-    (0..7).each { |i| place_piece(:white_pawn, [6, i]) }
+    place_piece("#{color}_rook".to_sym, [back_row, 0])
+    place_piece("#{color}_knight".to_sym, [back_row, 1])
+    place_piece("#{color}_bishop".to_sym, [back_row, 2])
+    place_piece("#{color}_queen".to_sym, [back_row, 3])
+    place_piece("#{color}_king".to_sym, [back_row, 4])
+    place_piece("#{color}_bishop".to_sym, [back_row, 5])
+    place_piece("#{color}_knight".to_sym, [back_row, 6])
+    place_piece("#{color}_rook".to_sym, [back_row, 7])
+
+    BOARD_SIZE.times { |i| place_piece("#{color}_pawn".to_sym, [front_row, i]) }
   end
 
   # helper method to place pieces on board
@@ -97,40 +91,38 @@ class Board
     print (index - BOARD_SIZE).abs
   end
 
-  def build_letter_rows
-    print "  A  B  C  D  E  F  G  H\n"
-  end
-
+  # Initializes the board with rows built according to their even or odd index
   def initialize_board
-    built_board = []
-
-    BOARD_SIZE.times do |i|
-      row_order = i.even? ? 'even' : 'odd'
-      built_board << build_row(row_order)
-    end
-    built_board
+    Array.new(BOARD_SIZE) { |i| build_row(i.even? ? 'even' : 'odd') }
   end
 
+  # Returns the ANSI color code for the dark squares on the board
   def dark
     DARK_COLOR
   end
 
+  # Returns the ANSI color code for the lights squares on the board
   def light
     LIGHT_COLOR
   end
 
+  # Returns a hash of Unicode symbols representing the chess pieces.
   def piece_codes
     CHESS_PIECES
   end
 
+  # formats and prints one square
   def print_square(square)
+    # square[0] = color; square[1] = piece
     "\e[#{square[0]}m #{square[1]} \e[0m"
   end
 
+  # creates a square with given color and piece
   def square(color, piece = ' ')
     [color, piece]
   end
 
+  # assigns color to a square base on index and row_order
   def color_for_square(index, row_order)
     if (row_order == 'odd' && index.even?) || (row_order != 'odd' && index.odd?)
       dark
@@ -139,15 +131,9 @@ class Board
     end
   end
 
+  # Builds a row of squares alternating colors based on row order
   def build_row(row_order)
-    row = []
-
-    BOARD_SIZE.times do |i|
-      color = color_for_square(i, row_order)
-      row << square(color)
-    end
-
-    row
+    Array.new(BOARD_SIZE) { |i| square(color_for_square(i, row_order)) }
   end
 end
 
@@ -169,5 +155,4 @@ typed_position1 = board.convert_from_alg_notation
 typed_position2 = board.convert_from_alg_notation
 
 board.move_piece(typed_position1, typed_position2)
-p 'need a coordinate...'
 board.print_board

@@ -48,7 +48,7 @@ class PieceMover
   end
 
   def convert_from_alg_notation
-    input = process_input(collect_input)
+    input = process_input(collect_input.downcase)
     p converted_input = [square_coordinates[input[1]], square_coordinates[input[0]]]
   end
 
