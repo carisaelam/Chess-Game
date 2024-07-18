@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative './piece_mover'
+require_relative './piece'
 # prints and updates board
 class Board
   attr_reader :board
@@ -29,6 +30,22 @@ class Board
     @piece_mover = PieceMover.new(self)
   end
 
+  def place_piece(piece, position)
+    @board[position[0]][position[1]][1] = piece
+  end
+
+  def piece_at(position)
+    raise ArgumentError, 'Invalid position' unless valid_position?(position)
+
+    @board[position[0]][position[1]]
+  end
+
+  def valid_position?(position)
+    position.is_a?(Array) && position.length == 2 && position.all? do |coord|
+      coord.is_a?(Integer) && coord.between?(0, 7)
+    end
+  end
+
   # prints a drawn board between two rows of letters
   def print_board
     print "  A  B  C  D  E  F  G  H\n"
@@ -50,38 +67,25 @@ class Board
     setup_pieces(:white)
   end
 
-  # PieceMover main method
-  def move_piece(start_position, end_position)
-    @piece_mover.move_piece(start_position, end_position)
-  end
-
-  # PieceMover helper method
-  def convert_from_alg_notation
-    @piece_mover.convert_from_alg_notation
-  end
-
   private
+
+  # knight = Knight.new(:white, [0, 4])
+  # place_piece(knight, [0, 3])
 
   # sets pieces in their starting positions based on color
   def setup_pieces(color)
     back_row = color == :black ? 0 : 7
     front_row = color == :black ? 1 : 6
+    place_piece(Rook.new(color, [back_row, 0]), [back_row, 0])
+    place_piece(Knight.new(color, [back_row, 1]), [back_row, 1])
+    place_piece(Bishop.new(color, [back_row, 2]), [back_row, 2])
+    place_piece(Queen.new(color, [back_row, 3]), [back_row, 3])
+    place_piece(King.new(color, [back_row, 4]), [back_row, 4])
+    place_piece(Bishop.new(color, [back_row, 5]), [back_row, 5])
+    place_piece(Knight.new(color, [back_row, 6]), [back_row, 6])
+    place_piece(Rook.new(color, [back_row, 7]), [back_row, 7])
 
-    place_piece("#{color}_rook".to_sym, [back_row, 0])
-    place_piece("#{color}_knight".to_sym, [back_row, 1])
-    place_piece("#{color}_bishop".to_sym, [back_row, 2])
-    place_piece("#{color}_queen".to_sym, [back_row, 3])
-    place_piece("#{color}_king".to_sym, [back_row, 4])
-    place_piece("#{color}_bishop".to_sym, [back_row, 5])
-    place_piece("#{color}_knight".to_sym, [back_row, 6])
-    place_piece("#{color}_rook".to_sym, [back_row, 7])
-
-    BOARD_SIZE.times { |i| place_piece("#{color}_pawn".to_sym, [front_row, i]) }
-  end
-
-  # helper method to place pieces on board
-  def place_piece(piece_type, position)
-    board[position[0]][position[1]][1] = piece_codes[piece_type]
+    BOARD_SIZE.times { |i| place_piece(Pawn.new(color, [front_row, i]), [front_row, i]) }
   end
 
   # creates a row of squares in between two rows of numbers
@@ -107,14 +111,20 @@ class Board
   end
 
   # Returns a hash of Unicode symbols representing the chess pieces.
-  def piece_codes
+  def chess_pieces
     CHESS_PIECES
   end
 
   # formats and prints one square
   def print_square(square)
-    # square[0] = color; square[1] = piece
-    "\e[#{square[0]}m #{square[1]} \e[0m"
+    color = square[0]
+
+    piece_code = if square[1].is_a?(Piece)
+                   square[1].unicode_symbol
+                 else
+                   square[1]
+                 end
+    "\e[#{color}m #{piece_code} \e[0m"
   end
 
   # creates a square with given color and piece
@@ -136,21 +146,3 @@ class Board
     Array.new(BOARD_SIZE) { |i| square(color_for_square(i, row_order)) }
   end
 end
-
-# board = Board.new
-# board.starting_positions
-# board.print_board
-# board.move_piece([6, 0], [5, 0])
-# board.print_board
-# board.move_piece([1, 0], [2, 0])
-# board.print_board
-
-# board = Board.new
-# board.starting_positions
-
-# board.print_board
-# typed_position1 = board.convert_from_alg_notation
-# typed_position2 = board.convert_from_alg_notation
-
-# board.move_piece(typed_position1, typed_position2)
-# board.print_board

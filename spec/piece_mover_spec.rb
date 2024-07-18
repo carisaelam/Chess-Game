@@ -15,7 +15,7 @@ RSpec.describe PieceMover do
 
       it 'moves the white pawn up one' do
         piece_mover.move_piece([6, 0], [5, 0])
-        expect(board.board[5][0][1]).to eq("\u2659") # Ensure you use the correct Unicode for pawn
+        expect(board.board[5][0][1].unicode_symbol).to eq("\u2659") # Ensure you use the correct Unicode for pawn
         p 'After move:'
         board.draw_board
       end
