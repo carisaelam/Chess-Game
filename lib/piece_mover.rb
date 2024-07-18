@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class PieceMover
+  attr_reader :board
+
   def initialize(board)
     @board = board
   end
@@ -28,19 +30,25 @@ class PieceMover
 
   # copies start_position piece onto the end_position piece
   def move_piece(start_position, end_position)
-    p 'move_piece runing from within piecemover'
-    p "start position: #{start_position}"
-    p "end position: #{end_position}"
-    # ensures end_position is on the board
-    return nil if check_in_bounds(end_position) == false
+    return false unless validate_move(start_position, end_position)
 
-    p "we're in bounds.."
-    # ensures end_position is not already taken
-    return end_point(end_position) if end_point(end_position) != ' '
-
-    p 'about to run set_pieces'
     set_pieces(start_position, end_position)
     clear_pieces(start_position)
+  end
+
+  def valid_move_for_type(start_position, end_position)
+    start_piece = start_point(start_position) # contents of start square
+    return true if start_piece.valid_move?(start_position, end_position)
+
+    p 'NOT A VALID MOVE FOR THAT PIECE'
+    false
+  end
+
+  def validate_move(start_position, end_position)
+    check_in_bounds(end_position) &&
+      valid_move_for_type(start_position, end_position)
+
+    # ensures end_position is not already taken
   end
 
   # simply collects user input through gets.chomp
@@ -65,7 +73,10 @@ class PieceMover
 
   # check if position is on the board
   def check_in_bounds(position)
-    position[0].between?(0, 7) && position[1].between?(0, 7)
+    return true if position[0].between?(0, 7) && position[1].between?(0, 7)
+
+    p 'OUT OF BOUNDS'
+    false
   end
 
   # return start_position from board
@@ -82,9 +93,10 @@ class PieceMover
   def set_pieces(start_position, end_position)
     p 'inside set_pieces'
     p "start #{start_position} end: #{end_position}"
-
+    p "before move #{@board.board[end_position[0]][end_position[1]][1]}"
     @board.board[end_position[0]][end_position[1]][1] = @board.board[start_position[0]][start_position[1]][1]
-    p "after move start #{start_position} end: #{end_position}"
+
+    p "after move  #{@board.board[end_position[0]][end_position[1]][1]}"
   end
 
   # clears piece from start_position

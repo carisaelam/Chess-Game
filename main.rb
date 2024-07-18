@@ -13,16 +13,20 @@ board = Board.new
 coordinate_converter = CoordinateConverter.new
 piece_mover = PieceMover.new(board)
 
-knight = Knight.new(:white, [0, 4])
-board.place_piece(knight, [0, 3])
-
 board.print_board
 board.starting_positions
 board.print_board
 
-pp board.board[6][0][1].unicode_symbol
-p piece_mover.move_piece([6, 0], [5, 0])
+piece_mover.move_piece([7, 1], [5, 0])
 board.print_board
 
-p board.piece_at([5, 0])
-p board.piece_at([6, 0])
+piece_mover.move_piece([5, 0], [3, 1])
+board.print_board
+
+p 'out of bounds move coming up'
+piece_mover.move_piece([3, 1], [9, 1])
+board.print_board
+
+p 'invalid move for type coming up'
+piece_mover.move_piece([3, 1], [3, 2])
+board.print_board

@@ -12,7 +12,7 @@ class Piece
     "#{color}_#{self.class.name.downcase}"
   end
 
-  def valid_move?(end_position)
-    true
+  def valid_move?(start_position, end_position)
+    raise NotImplementedError, 'Method should be called from subclass'
   end
 end
