@@ -17,16 +17,62 @@ board.print_board
 board.starting_positions
 board.print_board
 
-piece_mover.move_piece([7, 1], [5, 0])
-board.print_board
 
-piece_mover.move_piece([5, 0], [3, 1])
-board.print_board
 
-p 'out of bounds move coming up'
-piece_mover.move_piece([3, 1], [9, 1])
-board.print_board
 
-p 'invalid move for type coming up'
-piece_mover.move_piece([3, 1], [3, 2])
-board.print_board
+
+# # King Checks
+# # _____________________________________________
+# p 'white king horizontal move'
+# piece_mover.move_piece([7, 4], [7, 5])
+# board.print_board
+
+# p 'black king horizontal move'
+# piece_mover.move_piece([0, 4], [0, 5])
+# board.print_board
+
+# p 'white king vertical move'
+# piece_mover.move_piece([7, 5], [6, 5])
+# board.print_board
+
+# p 'black king vertical move'
+# piece_mover.move_piece([0, 5], [1, 5])
+# board.print_board
+
+# p 'white king diagonal move'
+# piece_mover.move_piece([6, 5], [7, 6])
+# board.print_board
+
+# p 'black king diagonal move'
+# piece_mover.move_piece([1, 5], [2, 6])
+# board.print_board
+
+# p 'white king attempts two steps'
+# piece_mover.move_piece([7, 6], [7, 4])
+# board.print_board
+
+# # Pawn Checks
+# # ___________________________________________
+# p 'black pawn down'
+# piece_mover.move_piece([1, 0], [2, 0])
+# board.print_board
+
+# p 'white pawn up'
+# piece_mover.move_piece([6, 0], [5, 0])
+# board.print_board
+
+# p 'out of bounds move'
+# piece_mover.move_piece([5, 0], [9, 0])
+# board.print_board
+
+# p 'invalid move for piece'
+# piece_mover.move_piece([5, 0], [6, 5])
+# board.print_board
+
+# p 'white trying to move down'
+# piece_mover.move_piece([5, 0], [6, 0])
+# board.print_board
+
+# p 'black trying to move up'
+# piece_mover.move_piece([2, 0], [1, 0])
+# board.print_board
