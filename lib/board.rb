@@ -37,7 +37,7 @@ class Board
   def piece_at(position)
     raise ArgumentError, 'Invalid position' unless valid_position?(position)
 
-    @board[position[0]][position[1]]
+    @board[position[0]][position[1]][1]
   end
 
   def valid_position?(position)
@@ -76,16 +76,16 @@ class Board
   def setup_pieces(color)
     back_row = color == :black ? 0 : 7
     front_row = color == :black ? 1 : 6
-    place_piece(Rook.new(color, [back_row, 0]), [back_row, 0])
-    place_piece(Knight.new(color, [back_row, 1]), [back_row, 1])
-    place_piece(Bishop.new(color, [back_row, 2]), [back_row, 2])
-    place_piece(Queen.new(color, [back_row, 3]), [back_row, 3])
-    place_piece(King.new(color, [back_row, 4]), [back_row, 4])
-    place_piece(Bishop.new(color, [back_row, 5]), [back_row, 5])
-    place_piece(Knight.new(color, [back_row, 6]), [back_row, 6])
-    place_piece(Rook.new(color, [back_row, 7]), [back_row, 7])
+    place_piece(Rook.new(color, [back_row, 0], board), [back_row, 0])
+    place_piece(Knight.new(color, [back_row, 1], board), [back_row, 1])
+    place_piece(Bishop.new(color, [back_row, 2], board), [back_row, 2])
+    place_piece(Queen.new(color, [back_row, 3], board), [back_row, 3])
+    place_piece(King.new(color, [back_row, 4], board), [back_row, 4])
+    place_piece(Bishop.new(color, [back_row, 5], board), [back_row, 5])
+    place_piece(Knight.new(color, [back_row, 6], board), [back_row, 6])
+    place_piece(Rook.new(color, [back_row, 7], board), [back_row, 7])
 
-    BOARD_SIZE.times { |i| place_piece(Pawn.new(color, [front_row, i]), [front_row, i]) }
+    BOARD_SIZE.times { |i| place_piece(Pawn.new(color, [front_row, i], board), [front_row, i]) }
   end
 
   # creates a row of squares in between two rows of numbers

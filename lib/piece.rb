@@ -1,15 +1,16 @@
 require_relative 'board'
 
 class Piece
-  attr_accessor :color, :position
+  attr_accessor :color, :position, :board
 
-  def initialize(color, position)
+  def initialize(color, position, board)
     @color = color
     @position = position
+    @board = board
   end
 
   def to_s
-    "#{color}_#{self.class.name.downcase}"
+    "#{color} #{self.class.name} at #{position}"
   end
 
   def valid_move?(start_position, end_position)

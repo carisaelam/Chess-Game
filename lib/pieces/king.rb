@@ -1,10 +1,7 @@
 require_relative '../piece'
+require_relative '../board'
 
 class King < Piece
-  def initialize(color, position)
-    super(color, position)
-  end
-
   def unicode_symbol
     if color == :white
       "\u2654"
