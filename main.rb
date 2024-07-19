@@ -8,43 +8,17 @@ require_relative 'lib/pieces/rook'
 require_relative 'lib/pieces/pawn'
 require_relative 'lib/pieces/king'
 require_relative 'lib/pieces/queen'
+require_relative 'lib/pieces/empty'
 
 board = Board.new
+board.starting_positions
+board.print_board
+
 coordinate_converter = CoordinateConverter.new
 piece_mover = PieceMover.new(board)
 
-# Initialize the board
-board = Board.new
-
-# Initialize the Rook and place it on the board
-rook = Rook.new(:white, [7, 0], board)
-board.place_piece(rook, [7, 0])
-
-# Print the board's state
-board.print_board
-
-# Debugging: Check the piece at position [7, 0]
-puts board.piece_at([7, 0]).class  # Should output Rook
-puts board.piece_at([7, 0]).color  # Should output :white
-
-# Clear and move pieces
-piece_mover = PieceMover.new(board)
-piece_mover.clear_pieces([6, 0])
-board.print_board
-
 piece_mover.move_piece([7, 0], [6, 0])
 board.print_board
-
-# board.print_board
-# board.starting_positions
-# board.print_board
-# puts board.piece_at([0, 0]).class
-# # clear pawn
-# piece_mover.clear_pieces([6, 0])
-# board.print_board
-
-# piece_mover.move_piece([7, 0], [6, 0])
-# board.print_board
 
 # # King Checks
 # # _____________________________________________

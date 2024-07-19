@@ -10,10 +10,11 @@ class Rook < Piece
   end
 
   def valid_move?(start_position, end_position)
+    p 'VALID MOVE RUNNING inside ROOK'
     row = start_position[0]
     col = start_position[1]
 
-    down_moves = [
+    left_moves = [
       [row, col + 1],
       [row, col + 2],
       [row, col + 3],
@@ -23,7 +24,7 @@ class Rook < Piece
       [row, col + 7]
     ]
 
-    up_moves = [
+    right_moves = [
       [row, col - 1],
       [row, col - 2],
       [row, col - 3],
@@ -33,7 +34,7 @@ class Rook < Piece
       [row, col - 7]
     ]
 
-    right_moves = [
+    down_moves = [
       [row + 1, col],
       [row + 2, col],
       [row + 3, col],
@@ -42,7 +43,7 @@ class Rook < Piece
       [row + 6, col],
       [row + 7, col]
     ]
-    left_moves = [
+    up_moves = [
       [row - 1, col],
       [row - 2, col],
       [row - 3, col],
@@ -52,35 +53,62 @@ class Rook < Piece
       [row - 7, col]
     ]
 
-    def in_bounds(position)
-      position[0].between?(0, 7) && position[1].between?(0, 7)
+    def in_bounds?(position)
+      p "running in_bounds for position: #{position}"
+      p position[0].between?(0, 7) && position[1].between?(0, 7)
+    end
+
+    def occupied_by_my_piece?(position)
+      p 'occupied running'
+      p "position: #{position}"
+      p "board.piece_at(position): #{board.piece_at(position)}}"
+      p "color of that...#{board.piece_at(position).color}"
     end
 
     moves = []
     down_moves.each do |move|
-      p "my color #{color}"
+      p 'DOWN move'
       p move
-      p in_bounds(move)
+      break unless in_bounds?(move)
 
-      moves << move
+      p 'is there a piece there? '
+      p "#{board.piece_at(move)} "
+
+      p "sending #{move} to piece_at"
     end
 
     up_moves.each do |move|
+      p 'UP move'
       p move
-      p in_bounds(move)
-      moves << move
-    end
+      break unless in_bounds?(move)
 
-    right_moves.each do |move|
-      p move
-      p in_bounds(move)
-      moves << move
+      p 'is there a piece there? '
+      p "board.piece_at : #{board.piece_at(move)}"
+      p "#{board.piece_at(move).color} "
+
+      p "sending #{move} to piece_at"
     end
 
     left_moves.each do |move|
+      p 'LEFT move'
       p move
-      p in_bounds(move)
-      moves << move
+      break unless in_bounds?(move)
+
+      p 'is there a piece there? '
+      p "#{board.piece_at(move)} "
+
+      p "sending #{move} to piece_at"
+    end
+
+    right_moves.each do |move|
+      p 'RIGHT move'
+      p move
+      break unless in_bounds?(move)
+
+      p 'is there a piece there? '
+      p "#{board.piece_at(move)} "
+
+      p "sending #{move} to piece_at"
     end
 
     p "valid moves include: #{moves}"

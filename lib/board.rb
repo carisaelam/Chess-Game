@@ -27,16 +27,34 @@ class Board
 
   def initialize
     @board = initialize_board
+    p "board is a #{board.class}"
     @piece_mover = PieceMover.new(self)
   end
 
+  # DELETE THIS METHOD
+  # def print_board_contents
+  #   p 'PRINTING BOARD CONTENTS'
+  #   board.each_with_index do |row, i|
+  #     row.each_with_index do |square, j|
+  #       p "Position [#{i}, #{j}] - Color: #{square[0]}, Piece: #{square[1].class}"
+  #     end
+  #   end
+  # end
+
   def place_piece(piece, position)
+    raise "Expected Piece, got #{piece.class}" unless piece.is_a?(Piece)
+
     @board[position[0]][position[1]][1] = piece
+    p "PLACE PIECE RUNNING. piece is a #{piece.class}"
+    p "PLACE PIECE RUNNING. piece color is #{piece.color}"
   end
 
   def piece_at(position)
     raise ArgumentError, 'Invalid position' unless valid_position?(position)
 
+    p 'PIECE AT RUNNING...'
+
+    p "the class is: #{@board[position[0]][position[1]][1].class}"
     @board[position[0]][position[1]][1]
   end
 
@@ -65,6 +83,7 @@ class Board
   def starting_positions
     setup_pieces(:black)
     setup_pieces(:white)
+    setup_pieces(:empty)
   end
 
   private
@@ -76,16 +95,20 @@ class Board
   def setup_pieces(color)
     back_row = color == :black ? 0 : 7
     front_row = color == :black ? 1 : 6
-    place_piece(Rook.new(color, [back_row, 0], board), [back_row, 0])
-    place_piece(Knight.new(color, [back_row, 1], board), [back_row, 1])
-    place_piece(Bishop.new(color, [back_row, 2], board), [back_row, 2])
-    place_piece(Queen.new(color, [back_row, 3], board), [back_row, 3])
-    place_piece(King.new(color, [back_row, 4], board), [back_row, 4])
-    place_piece(Bishop.new(color, [back_row, 5], board), [back_row, 5])
-    place_piece(Knight.new(color, [back_row, 6], board), [back_row, 6])
-    place_piece(Rook.new(color, [back_row, 7], board), [back_row, 7])
+    place_piece(Rook.new(color, [back_row, 0], self), [back_row, 0])
+    place_piece(Knight.new(color, [back_row, 1], self), [back_row, 1])
+    place_piece(Bishop.new(color, [back_row, 2], self), [back_row, 2])
+    place_piece(Queen.new(color, [back_row, 3], self), [back_row, 3])
+    place_piece(King.new(color, [back_row, 4], self), [back_row, 4])
+    place_piece(Bishop.new(color, [back_row, 5], self), [back_row, 5])
+    place_piece(Knight.new(color, [back_row, 6], self), [back_row, 6])
+    place_piece(Rook.new(color, [back_row, 7], self), [back_row, 7])
 
-    BOARD_SIZE.times { |i| place_piece(Pawn.new(color, [front_row, i], board), [front_row, i]) }
+    BOARD_SIZE.times { |i| place_piece(Pawn.new(color, [front_row, i], self), [front_row, i]) }
+
+    [2, 3, 4, 5].each do |row|
+      BOARD_SIZE.times { |i| place_piece(EmptyPiece.new, [row, i]) }
+    end
   end
 
   # creates a row of squares in between two rows of numbers
@@ -117,6 +140,10 @@ class Board
 
   # formats and prints one square
   def print_square(square)
+    # puts "DEBUG: square=#{square.class}"
+    # puts "square color is: #{square[0]}"
+    # puts "square [1] is a : #{square[1].class}"
+
     color = square[0]
 
     piece_code = if square[1].is_a?(Piece)
@@ -128,7 +155,8 @@ class Board
   end
 
   # creates a square with given color and piece
-  def square(color, piece = ' ')
+  def square(color, piece = EmptyPiece.new)
+    p "within square... piece is #{piece.class}"
     [color, piece]
   end
 
