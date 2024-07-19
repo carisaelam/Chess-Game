@@ -10,15 +10,10 @@ require_relative 'lib/pieces/king'
 require_relative 'lib/pieces/queen'
 require_relative 'lib/pieces/empty'
 
-board = Board.new
-board.starting_positions
-board.print_board
-
-coordinate_converter = CoordinateConverter.new
-piece_mover = PieceMover.new(board)
-
-piece_mover.move_piece([7, 0], [6, 0])
-board.print_board
+new_board = Board.new
+new_board.print_board
+# pp new_board.board[0][0][1].class
+# pp new_board.board[0][0][1].color
 
 # # King Checks
 # # _____________________________________________

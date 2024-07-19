@@ -27,7 +27,7 @@ class Board
 
   def initialize
     @board = initialize_board
-    p "board is a #{board.class}"
+    starting_positions
     @piece_mover = PieceMover.new(self)
   end
 
@@ -45,16 +45,11 @@ class Board
     raise "Expected Piece, got #{piece.class}" unless piece.is_a?(Piece)
 
     @board[position[0]][position[1]][1] = piece
-    p "PLACE PIECE RUNNING. piece is a #{piece.class}"
-    p "PLACE PIECE RUNNING. piece color is #{piece.color}"
   end
 
   def piece_at(position)
     raise ArgumentError, 'Invalid position' unless valid_position?(position)
 
-    p 'PIECE AT RUNNING...'
-
-    p "the class is: #{@board[position[0]][position[1]][1].class}"
     @board[position[0]][position[1]][1]
   end
 
@@ -93,8 +88,17 @@ class Board
 
   # sets pieces in their starting positions based on color
   def setup_pieces(color)
-    back_row = color == :black ? 0 : 7
-    front_row = color == :black ? 1 : 6
+    case color
+    when :black
+      back_row = 0
+      front_row = 1
+    when :white
+      back_row = 7
+      front_row = 6
+    else
+      # Skip setup if color is :empty
+      return
+    end
     place_piece(Rook.new(color, [back_row, 0], self), [back_row, 0])
     place_piece(Knight.new(color, [back_row, 1], self), [back_row, 1])
     place_piece(Bishop.new(color, [back_row, 2], self), [back_row, 2])
@@ -142,7 +146,8 @@ class Board
   def print_square(square)
     # puts "DEBUG: square=#{square.class}"
     # puts "square color is: #{square[0]}"
-    # puts "square [1] is a : #{square[1].class}"
+    # puts "square [1] is a : #{square[1].color} #{square[1].class}"
+    # puts
 
     color = square[0]
 
@@ -156,7 +161,6 @@ class Board
 
   # creates a square with given color and piece
   def square(color, piece = EmptyPiece.new)
-    p "within square... piece is #{piece.class}"
     [color, piece]
   end
 
