@@ -12,6 +12,18 @@ require_relative 'lib/pieces/empty'
 
 new_board = Board.new
 piece_mover = PieceMover.new(new_board)
+king = King.new(:white, nil, new_board)
+queen = Queen.new(:black, nil, new_board)
+black_pawn = Pawn.new(:black, nil, new_board)
+white_pawn = Pawn.new(:white, nil, new_board)
+
+new_board.place_piece(king, [3, 3])
+new_board.place_piece(queen, [3, 5])
+new_board.place_piece(black_pawn, [2, 4])
+new_board.place_piece(white_pawn, [4, 4])
+new_board.print_board
+
+piece_mover.move_piece([2, 4], [3, 4])
 
 new_board.print_board
 

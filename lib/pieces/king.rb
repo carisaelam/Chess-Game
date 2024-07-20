@@ -1,5 +1,4 @@
 require_relative '../piece'
-require_relative '../board'
 
 class King < Piece
   def unicode_symbol
@@ -8,6 +7,10 @@ class King < Piece
     else
       "\u265A"
     end
+  end
+
+  def to_s
+    "#{color.capitalize} #{self.class} #{position} - INSTANCE"
   end
 
   def valid_move?(start_position, end_position)
