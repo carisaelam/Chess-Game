@@ -11,9 +11,17 @@ require_relative 'lib/pieces/queen'
 require_relative 'lib/pieces/empty'
 
 new_board = Board.new
+piece_mover = PieceMover.new(new_board)
+
 new_board.print_board
-# pp new_board.board[0][0][1].class
-# pp new_board.board[0][0][1].color
+piece_mover.move_piece([7, 1], [5, 2])
+piece_mover.move_piece([6, 0], [5, 0])
+piece_mover.move_piece([5, 0], [4, 0])
+
+# rook moves
+piece_mover.move_piece([7, 0], [7, 1])
+
+new_board.print_board
 
 # # King Checks
 # # _____________________________________________

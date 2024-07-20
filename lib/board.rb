@@ -4,7 +4,11 @@ require_relative './piece_mover'
 require_relative './piece'
 # prints and updates board
 class Board
+  private
+
   attr_reader :board
+
+  public
 
   BOARD_SIZE = 8
   DARK_COLOR = 46
@@ -41,6 +45,10 @@ class Board
   #   end
   # end
 
+  def list_instance_methods
+    self.class.instance_methods(false)
+  end
+
   def place_piece(piece, position)
     raise "Expected Piece, got #{piece.class}" unless piece.is_a?(Piece)
 
@@ -51,6 +59,7 @@ class Board
     raise ArgumentError, 'Invalid position' unless valid_position?(position)
 
     @board[position[0]][position[1]][1]
+    # raise "Expected Piece, got #{piece.class}" unless piece.is_a?(Piece)
   end
 
   def valid_position?(position)

@@ -17,9 +17,8 @@ class PieceMover
 
   # clears piece from start_position
   # # MAKE PRIVATE AGAIN
-  def clear_pieces(start_position)
-    p 'clear pieces running now'
-    @board.board[start_position[0]][start_position[1]][1] = ' '
+  def clear_pieces(position)
+    @board.place_piece(EmptyPiece.new, position)
   end
 
   private
@@ -33,7 +32,6 @@ class PieceMover
 
   def valid_move_for_type(start_position, end_position)
     start_piece = start_point(start_position) # contents of start square
-    puts "start piece: #{start_piece}"
     return true if start_piece.valid_move?(start_position, end_position)
 
     p 'NOT A VALID MOVE FOR THAT PIECE'
@@ -50,21 +48,19 @@ class PieceMover
 
   # return start_position from board
   def start_point(start_position)
-    @board.board[start_position[0]][start_position[1]][1]
+    @board.piece_at(start_position)
   end
 
   # return end_position from board
   def end_point(end_position)
-    @board.board[end_position[0]][end_position[1]][1]
+    @board.piece_at(end_position)
   end
 
   # copies the piece from the start position to the end position
   def set_pieces(start_position, end_position)
-    p 'inside set_pieces'
-    p "start #{start_position} end: #{end_position}"
-    p "before move #{@board.board[end_position[0]][end_position[1]][1]}"
-    @board.board[end_position[0]][end_position[1]][1] = @board.board[start_position[0]][start_position[1]][1]
+    piece = @board.piece_at(start_position)
+    raise 'No piece at start position' if piece.nil?
 
-    p "after move  #{@board.board[end_position[0]][end_position[1]][1]}"
+    @board.place_piece(piece, end_position)
   end
 end

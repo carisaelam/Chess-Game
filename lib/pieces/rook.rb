@@ -1,4 +1,5 @@
 require_relative '../piece'
+require_relative '../board'
 
 class Rook < Piece
   def unicode_symbol
@@ -7,6 +8,10 @@ class Rook < Piece
     else
       "\u265C"
     end
+  end
+
+  def to_s
+    "#{color.capitalize} #{self.class} #{position} - INSTANCE"
   end
 
   def valid_move?(start_position, end_position)
@@ -59,56 +64,53 @@ class Rook < Piece
     end
 
     def occupied_by_my_piece?(position)
-      p 'occupied running'
-      p "position: #{position}"
-      p "board.piece_at(position): #{board.piece_at(position)}}"
-      p "color of that...#{board.piece_at(position).color}"
     end
 
     moves = []
     down_moves.each do |move|
       p 'DOWN move'
-      p move
+      p "move is #{move}"
       break unless in_bounds?(move)
 
-      p 'is there a piece there? '
-      p "#{board.piece_at(move)} "
+      piece = @board.piece_at(move)
+      break if color == piece.color
 
-      p "sending #{move} to piece_at"
+      moves << move
     end
 
     up_moves.each do |move|
       p 'UP move'
-      p move
+      p "move is #{move}"
       break unless in_bounds?(move)
 
-      p 'is there a piece there? '
-      p "board.piece_at : #{board.piece_at(move)}"
-      p "#{board.piece_at(move).color} "
+      piece = @board.piece_at(move)
+      break if color == piece.color
 
-      p "sending #{move} to piece_at"
+      moves << move
     end
 
     left_moves.each do |move|
       p 'LEFT move'
       p move
+
       break unless in_bounds?(move)
 
-      p 'is there a piece there? '
-      p "#{board.piece_at(move)} "
+      piece = @board.piece_at(move)
+      break if color == piece.color
 
-      p "sending #{move} to piece_at"
+      moves << move
     end
 
     right_moves.each do |move|
       p 'RIGHT move'
       p move
+
       break unless in_bounds?(move)
 
-      p 'is there a piece there? '
-      p "#{board.piece_at(move)} "
+      piece = @board.piece_at(move)
+      break if color == piece.color
 
-      p "sending #{move} to piece_at"
+      moves << move
     end
 
     p "valid moves include: #{moves}"
