@@ -12,15 +12,10 @@ require_relative 'lib/pieces/empty'
 
 new_board = Board.new
 piece_mover = PieceMover.new(new_board)
+new_bishop = Bishop.new(:black, [3, 3], new_board)
+new_board.place_piece(new_bishop, [3, 3])
 
-new_board.print_board
-piece_mover.move_piece([7, 1], [5, 2])
-piece_mover.move_piece([6, 0], [5, 0])
-piece_mover.move_piece([5, 0], [4, 0])
-
-# rook moves
-piece_mover.move_piece([7, 0], [7, 1])
-
+piece_mover.move_piece([3, 3], [7, 7])
 new_board.print_board
 
 # # King Checks

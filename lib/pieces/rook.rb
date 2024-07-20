@@ -44,6 +44,7 @@ class Rook < Piece
       break if color == piece.color
 
       moves << next_move
+      # captures an enemy piece then stops
       break unless piece.color == :empty
     end
     p "valid moves include #{moves}"
