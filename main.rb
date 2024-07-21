@@ -27,6 +27,10 @@ piece_mover.move_piece([2, 4], [3, 4])
 
 new_board.print_board
 
+piece_mover.move_piece([4, 4], [3, 5])
+
+new_board.print_board
+
 # # King Checks
 # # _____________________________________________
 # p 'white king horizontal move'
