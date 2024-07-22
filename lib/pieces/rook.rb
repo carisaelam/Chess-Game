@@ -10,10 +10,6 @@ class Rook < Piece
     end
   end
 
-  def to_s
-    "#{color.capitalize} #{self.class} #{position} - INSTANCE"
-  end
-
   def valid_move?(start_position, end_position)
     row, col = start_position
 
@@ -47,7 +43,6 @@ class Rook < Piece
       # captures an enemy piece then stops
       break unless piece.color == :empty
     end
-    p "valid moves include #{moves}"
     moves
   end
 

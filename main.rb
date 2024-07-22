@@ -12,6 +12,7 @@ require_relative 'lib/pieces/empty'
 
 new_board = Board.new
 piece_mover = PieceMover.new(new_board)
+coordinate_converter = CoordinateConverter.new
 king = King.new(:white, nil, new_board)
 queen = Queen.new(:black, nil, new_board)
 black_pawn = Pawn.new(:black, nil, new_board)
@@ -30,6 +31,14 @@ new_board.print_board
 piece_mover.move_piece([4, 4], [3, 5])
 
 new_board.print_board
+piece_mover.move_piece([3, 4], [4, 4])
+new_board.print_board
+piece_mover.move_piece([4, 4], [5, 4])
+new_board.print_board
+piece_mover.move_piece([5, 4], [6, 5])
+new_board.print_board
+
+p coordinate_converter.convert_from_alg_notation('b2')
 
 # # King Checks
 # # _____________________________________________

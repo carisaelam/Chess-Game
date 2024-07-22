@@ -27,6 +27,8 @@ class Knight < Piece
     filtered_moves.include?(end_position)
   end
 
+  private
+
   # filter out out of bounds moves
   def filter_possible_moves(moves)
     legal_moves = []

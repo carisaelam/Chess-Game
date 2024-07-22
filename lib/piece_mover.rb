@@ -16,7 +16,6 @@ class PieceMover
   end
 
   # clears piece from start_position
-  # # MAKE PRIVATE AGAIN
   def clear_pieces(position)
     @board.place_piece(EmptyPiece.new, position)
   end

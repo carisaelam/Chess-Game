@@ -37,7 +37,7 @@ class Pawn < Piece
 
     if enemy_check
       moves << position if piece_color != color && piece_color != :empty
-    elsif piece_color == color_check
+    elsif piece_color == :empty
       moves << position
     end
   end

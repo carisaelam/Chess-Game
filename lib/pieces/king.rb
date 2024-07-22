@@ -9,10 +9,6 @@ class King < Piece
     end
   end
 
-  def to_s
-    "#{color.capitalize} #{self.class} #{position} - INSTANCE"
-  end
-
   def valid_move?(start_position, end_position)
     row = start_position[0]
     col = start_position[1]
@@ -29,6 +25,8 @@ class King < Piece
     filtered_moves = filter_possible_moves(moves)
     filtered_moves.include?(end_position)
   end
+
+  private
 
   # filter out out of bounds moves
   def filter_possible_moves(moves)

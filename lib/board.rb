@@ -2,6 +2,7 @@
 
 require_relative './piece_mover'
 require_relative './piece'
+
 # prints and updates board
 class Board
   private

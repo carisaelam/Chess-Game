@@ -2,7 +2,7 @@ require_relative '../piece'
 
 class EmptyPiece < Piece
   def initialize
-    super(:empty, [0, 0], nil) # Default values for color and position
+    super(:empty, [0, 0], nil)
   end
 
   def unicode_symbol
