@@ -13,7 +13,13 @@ class Queen < Piece
   end
 
   def valid_move?(start_position, end_position)
-    row, col = start_position
+    all_moves = all_valid_moves(start_position)
+
+    all_moves.include?(end_position)
+  end
+
+  def all_valid_moves(position)
+    row, col = position
 
     # bishop moves
     up_right_moves = generate_moves(row, col, 1, 1)
@@ -27,9 +33,7 @@ class Queen < Piece
     down_moves = generate_moves(row, col, 1, 0)
     up_moves = generate_moves(row, col, -1, 0)
 
-    all_moves = up_right_moves + down_left_moves + up_left_moves + down_right_moves + right_moves + left_moves + up_moves + down_moves
-
-    all_moves.include?(end_position)
+    up_right_moves + down_left_moves + up_left_moves + down_right_moves + right_moves + left_moves + up_moves + down_moves
   end
 
   private

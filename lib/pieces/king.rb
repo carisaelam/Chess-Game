@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../piece'
+require_relative '../board'
 
 class King < Piece
   def unicode_symbol
@@ -12,11 +13,14 @@ class King < Piece
   end
 
   def valid_move?(start_position, end_position)
-    row = start_position[0]
-    col = start_position[1]
-    moves = generate_moves(row, col)
+    all_moves = all_valid_moves(start_position)
 
-    in_bounds?(end_position) && moves.include?(end_position)
+    all_moves.include?(end_position)
+  end
+
+  def all_valid_moves(position)
+    row, col = position
+    generate_moves(row, col)
   end
 
   private
@@ -32,6 +36,12 @@ class King < Piece
     moves.push([row + 1, col + 1])
     moves.push([row - 1, col + 1])
 
-    moves.select { |move| in_bounds?(move) }
+    in_bounds_moves = moves.select { |move| in_bounds?(move) }
+    in_bounds_moves.select { |move| check_colors(move) }
+  end
+
+  def check_colors(position)
+    piece = @board.piece_at(position)
+    piece.color != color || piece.color == :empty
   end
 end
