@@ -12,7 +12,13 @@ class Pawn < Piece
   end
 
   def valid_move?(start_position, end_position)
-    generate_moves(start_position).include?(end_position)
+    all_moves = all_valid_moves(start_position)
+
+    all_moves.include?(end_position)
+  end
+
+  def all_valid_moves(position)
+    generate_moves(position)
   end
 
   private

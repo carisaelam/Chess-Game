@@ -3,14 +3,16 @@
 require_relative 'piece_mover'
 require_relative 'coordinate_converter'
 require_relative 'board'
+require_relative 'game_status'
 
 class GameFlow
-  attr_reader :board, :piece_mover, :coordinate_converter
+  attr_reader :board, :piece_mover, :coordinate_converter, :game_status
 
-  def initialize(board, piece_mover, coordinate_converter)
+  def initialize(board, piece_mover, coordinate_converter, game_status)
     @board = board
     @piece_mover = piece_mover
     @coordinate_converter = coordinate_converter
+    @game_status = game_status
   end
 
   def player_turn
@@ -27,6 +29,7 @@ class GameFlow
     board.print_board
     loop do
       player_turn
+      game_status.check?(:white)
       # switch-player
     end
   end

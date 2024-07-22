@@ -26,4 +26,9 @@ class Piece
   def update_position(new_position)
     @position = new_position
   end
+
+  def check_colors(position)
+    piece = @board.piece_at(position)
+    piece.color != color || piece.color == :empty
+  end
 end

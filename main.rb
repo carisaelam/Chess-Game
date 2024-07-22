@@ -19,20 +19,44 @@ piece_mover = PieceMover.new(board)
 coordinate_converter = CoordinateConverter.new
 game_status = GameStatus.new(board)
 
-# game = GameFlow.new(board, piece_mover, coordinate_converter)
-# game.start
+game = GameFlow.new(board, piece_mover, coordinate_converter, game_status)
+game.start
 
-board.place_piece(EmptyPiece.new, [1, 0])
-board.place_piece(EmptyPiece.new, [1, 1])
-board.place_piece(EmptyPiece.new, [1, 2])
-board.place_piece(EmptyPiece.new, [1, 3])
-board.place_piece(EmptyPiece.new, [1, 4])
-board.place_piece(EmptyPiece.new, [1, 5])
-board.place_piece(EmptyPiece.new, [1, 6])
-board.place_piece(EmptyPiece.new, [1, 7])
-board.print_board
+# board.place_piece(EmptyPiece.new, [1, 0])
+# board.place_piece(EmptyPiece.new, [1, 1])
+# board.place_piece(EmptyPiece.new, [1, 2])
+# board.place_piece(EmptyPiece.new, [1, 3])
+# board.place_piece(EmptyPiece.new, [1, 4])
+# board.place_piece(EmptyPiece.new, [1, 5])
+# board.place_piece(EmptyPiece.new, [1, 6])
+# board.place_piece(EmptyPiece.new, [1, 7])
 
-piece_mover.move_piece([0, 1], [2, 2])
+# board.place_piece(EmptyPiece.new, [6, 0])
+# board.place_piece(EmptyPiece.new, [6, 1])
+# board.place_piece(EmptyPiece.new, [6, 2])
+# board.place_piece(EmptyPiece.new, [6, 3])
+# board.place_piece(EmptyPiece.new, [6, 4])
+# board.place_piece(EmptyPiece.new, [6, 5])
+# board.place_piece(EmptyPiece.new, [6, 6])
+# board.place_piece(EmptyPiece.new, [6, 7])
 
-board.print_board
-game_status.check?
+# board.place_piece(EmptyPiece.new, [7, 0])
+# board.place_piece(EmptyPiece.new, [7, 1])
+# board.place_piece(EmptyPiece.new, [7, 2])
+# board.place_piece(EmptyPiece.new, [7, 3])
+# board.place_piece(EmptyPiece.new, [7, 5])
+# board.place_piece(EmptyPiece.new, [7, 6])
+# board.place_piece(EmptyPiece.new, [7, 7])
+
+# board.place_piece(EmptyPiece.new, [0, 1])
+# board.place_piece(EmptyPiece.new, [0, 2])
+# board.place_piece(EmptyPiece.new, [0, 3])
+# board.place_piece(EmptyPiece.new, [0, 5])
+# board.place_piece(EmptyPiece.new, [0, 6])
+# board.place_piece(EmptyPiece.new, [0, 7])
+
+# queen = Queen.new(:black, [4, 4], board)
+
+# board.place_piece(queen, [6, 3])
+
+# game_status.check?(:black)
