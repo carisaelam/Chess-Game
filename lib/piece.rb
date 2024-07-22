@@ -22,4 +22,8 @@ class Piece
   def in_bounds?(position)
     position.all? { |coord| coord.between?(0, 7) }
   end
+
+  def update_position(new_position)
+    @position = new_position
+  end
 end

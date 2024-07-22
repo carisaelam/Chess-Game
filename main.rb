@@ -30,6 +30,9 @@ board.place_piece(EmptyPiece.new, [1, 4])
 board.place_piece(EmptyPiece.new, [1, 5])
 board.place_piece(EmptyPiece.new, [1, 6])
 board.place_piece(EmptyPiece.new, [1, 7])
+board.print_board
+
+piece_mover.move_piece([0, 1], [2, 2])
 
 board.print_board
 game_status.check?

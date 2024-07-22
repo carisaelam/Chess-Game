@@ -46,20 +46,17 @@ class Board
   #   end
   # end
 
-  def list_instance_methods
-    self.class.instance_methods(false)
-  end
-
-  def place_piece(piece, position)
+  def place_piece(piece, new_position)
     raise "Expected Piece, got #{piece.class}" unless piece.is_a?(Piece)
 
-    @board[position[0]][position[1]][1] = piece
+    @board[new_position[0]][new_position[1]][1] = piece
+    piece.update_position(new_position)
   end
 
   def piece_at(position)
     raise ArgumentError, 'Invalid position' unless valid_position?(position)
 
-    @board[position[0]][position[1]][1]
+    board[position[0]][position[1]][1]
   end
 
   def valid_position?(position)
@@ -91,9 +88,6 @@ class Board
   end
 
   private
-
-  # knight = Knight.new(:white, [0, 4])
-  # place_piece(knight, [0, 3])
 
   # sets pieces in their starting positions based on color
   def setup_pieces(color)

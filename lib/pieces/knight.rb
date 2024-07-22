@@ -36,6 +36,12 @@ class Knight < Piece
     moves.push([row + 2, col - 1])
     moves.push([row - 2, col - 1])
 
-    moves.select { |move| in_bounds?(move) }
+    in_bounds_moves = moves.select { |move| in_bounds?(move) }
+    in_bounds_moves.select { |move| check_colors(move) }
+  end
+
+  def check_colors(position)
+    piece = @board.piece_at(position)
+    piece.color != color || piece.color == :empty
   end
 end
