@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rspec'
 require_relative '../lib/pieces/pawn'
 require_relative '../lib/board'
@@ -80,13 +82,13 @@ RSpec.describe Pawn do
     end
   end
 
-  describe '#valid_position?' do
+  describe '#in_bounds?' do
     it 'returns true for a position within the board bounds' do
-      expect(white_pawn.send(:valid_position?, [5, 4])).to be true
+      expect(white_pawn.send(:in_bounds?, [5, 4])).to be true
     end
 
     it 'returns false for a position outside the board bounds' do
-      expect(white_pawn.send(:valid_position?, [8, 4])).to be false
+      expect(white_pawn.send(:in_bounds?, [8, 4])).to be false
     end
   end
 

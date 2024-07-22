@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../lib/coordinate_converter'
 
 RSpec.describe CoordinateConverter do

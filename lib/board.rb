@@ -60,7 +60,6 @@ class Board
     raise ArgumentError, 'Invalid position' unless valid_position?(position)
 
     @board[position[0]][position[1]][1]
-    # raise "Expected Piece, got #{piece.class}" unless piece.is_a?(Piece)
   end
 
   def valid_position?(position)

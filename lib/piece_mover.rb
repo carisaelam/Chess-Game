@@ -17,7 +17,7 @@ class PieceMover
 
   # clears piece from start_position
   def clear_pieces(position)
-    @board.place_piece(EmptyPiece.new, position)
+    board.place_piece(EmptyPiece.new, position)
   end
 
   private
@@ -25,8 +25,6 @@ class PieceMover
   def validate_move(start_position, end_position)
     check_in_bounds(end_position) &&
       valid_move_for_type(start_position, end_position)
-
-    # ensures end_position is not already taken
   end
 
   def valid_move_for_type(start_position, end_position)
@@ -47,19 +45,19 @@ class PieceMover
 
   # return start_position from board
   def start_point(start_position)
-    @board.piece_at(start_position)
+    board.piece_at(start_position)
   end
 
   # return end_position from board
   def end_point(end_position)
-    @board.piece_at(end_position)
+    board.piece_at(end_position)
   end
 
   # copies the piece from the start position to the end position
   def set_pieces(start_position, end_position)
-    piece = @board.piece_at(start_position)
+    piece = board.piece_at(start_position)
     raise 'No piece at start position' if piece.nil?
 
-    @board.place_piece(piece, end_position)
+    board.place_piece(piece, end_position)
   end
 end

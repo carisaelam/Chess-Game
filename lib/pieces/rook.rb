@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../piece'
 require_relative '../board'
 
@@ -44,9 +46,5 @@ class Rook < Piece
       break unless piece.color == :empty
     end
     moves
-  end
-
-  def in_bounds?(position)
-    position.all? { |coord| coord.between?(0, 7) }
   end
 end

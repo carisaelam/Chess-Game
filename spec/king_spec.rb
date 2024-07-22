@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # spec/king_spec.rb
 
 require_relative '../lib/pieces/king'

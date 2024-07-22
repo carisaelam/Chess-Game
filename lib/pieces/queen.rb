@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../piece'
 require_relative '../board'
 
@@ -27,7 +29,6 @@ class Queen < Piece
 
     all_moves = up_right_moves + down_left_moves + up_left_moves + down_right_moves + right_moves + left_moves + up_moves + down_moves
 
-    # ultimately says whether move is valid
     all_moves.include?(end_position)
   end
 
@@ -49,9 +50,5 @@ class Queen < Piece
       break unless piece.color == :empty
     end
     moves
-  end
-
-  def in_bounds?(position)
-    position.all? { |coord| coord.between?(0, 7) }
   end
 end

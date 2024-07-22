@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../piece'
 
 class Pawn < Piece
@@ -30,8 +32,8 @@ class Pawn < Piece
     moves
   end
 
-  def add_valid_move(moves, position, color_check, enemy_check = false)
-    return unless valid_position?(position)
+  def add_valid_move(moves, position, _color_check, enemy_check = false)
+    return unless in_bounds?(position)
 
     piece_color = board.piece_at(position).color
 
@@ -40,9 +42,5 @@ class Pawn < Piece
     elsif piece_color == :empty
       moves << position
     end
-  end
-
-  def valid_position?(position)
-    position.all? { |coord| coord.between?(0, 7) }
   end
 end

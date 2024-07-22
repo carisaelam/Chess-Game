@@ -1,3 +1,42 @@
+# frozen_string_literal: true
+
+require_relative 'piece_mover'
+require_relative 'coordinate_converter'
+require_relative 'board'
+
+class GameFlow
+  attr_reader :board, :piece_mover, :coordinate_converter
+
+  def initialize(board, piece_mover, coordinate_converter)
+    @board = board
+    @piece_mover = piece_mover
+    @coordinate_converter = coordinate_converter
+  end
+
+  def start
+    board.print_board
+    loop do
+      p 'pick a start point'
+      start_point = gets.chomp
+      p 'pick an end point'
+      end_point = gets.chomp
+      move_piece(start_point, end_point)
+      board.print_board
+    end
+  end
+
+  private
+
+  def move_piece(start_position, end_position)
+    start_coordinate = coordinate_converter.convert_from_alg_notation(start_position)
+    end_coordinate = coordinate_converter.convert_from_alg_notation(end_position)
+
+    return nil unless start_coordinate && end_coordinate
+
+    piece_mover.move_piece(start_coordinate, end_coordinate)
+  end
+end
+
 # # GameFlow Class Goals
 
 # [ ] Manage Turn Sequence

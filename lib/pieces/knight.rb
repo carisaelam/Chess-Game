@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../piece'
 require_relative '../board'
 
@@ -13,6 +15,14 @@ class Knight < Piece
   def valid_move?(start_position, end_position)
     row = start_position[0]
     col = start_position[1]
+    moves = generate_moves(row, col)
+
+    in_bounds?(end_position) && moves.include?(end_position)
+  end
+
+  private
+
+  def generate_moves(row, col)
     moves = []
     moves.push([row + 1, col + 2])
     moves.push([row - 1, col + 2])
@@ -23,22 +33,6 @@ class Knight < Piece
     moves.push([row + 2, col - 1])
     moves.push([row - 2, col - 1])
 
-    filtered_moves = filter_possible_moves(moves)
-    filtered_moves.include?(end_position)
-  end
-
-  private
-
-  # filter out out of bounds moves
-  def filter_possible_moves(moves)
-    legal_moves = []
-
-    moves.each do |move|
-      next unless move[0].between?(0, 7) && move[1].between?(0, 7)
-
-      legal_moves.push(move)
-    end
-
-    legal_moves
+    moves.select { |move| in_bounds?(move) }
   end
 end

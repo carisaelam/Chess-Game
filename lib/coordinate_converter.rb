@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CoordinateConverter
   SQUARE_COORDINATES = {
     'a' => 0,
@@ -27,7 +29,7 @@ class CoordinateConverter
   # converts chess notation to board coordinates
   def convert_from_alg_notation(input)
     string = process_coordinate_input(input.downcase)
-    validated_string = validate_coordinates(string)
+    validate_coordinates(string)
     return nil unless validate_coordinates(string)
 
     [square_coordinates[string[1]], square_coordinates[string[0]]]
