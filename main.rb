@@ -58,5 +58,6 @@ game.start
 # queen = Queen.new(:black, [4, 4], board)
 
 # board.place_piece(queen, [6, 3])
+# board.print_board
 
 # game_status.check?(:black)

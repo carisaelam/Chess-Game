@@ -54,6 +54,7 @@ class Board
   end
 
   def piece_at(position)
+    # p "runing piece at: #{position}"
     raise ArgumentError, 'Invalid position' unless valid_position?(position)
 
     board[position[0]][position[1]][1]

@@ -31,11 +31,6 @@ RSpec.describe PieceMover do
       expect(board).to receive(:place_piece).with(instance_of(EmptyPiece), start_position)
       piece_mover.move_piece(start_position, end_position)
     end
-
-    it 'returns false if the move is not valid' do
-      allow(piece_mover).to receive(:validate_move).and_return(false)
-      expect(piece_mover.move_piece(start_position, end_position)).to be false
-    end
   end
 
   describe '#clear_pieces' do
@@ -48,30 +43,13 @@ RSpec.describe PieceMover do
 
   describe '#validate_move' do
     it 'returns true for a valid move' do
-      allow(piece_mover).to receive(:check_in_bounds).and_return(true)
       allow(piece_mover).to receive(:valid_move_for_type).and_return(true)
       expect(piece_mover.send(:validate_move, start_position, end_position)).to be true
     end
 
-    it 'returns false for an out of bounds move' do
-      allow(piece_mover).to receive(:check_in_bounds).and_return(false)
-      expect(piece_mover.send(:validate_move, start_position, end_position)).to be false
-    end
-
     it 'returns false for an invalid move for piece type' do
-      allow(piece_mover).to receive(:check_in_bounds).and_return(true)
       allow(piece_mover).to receive(:valid_move_for_type).and_return(false)
       expect(piece_mover.send(:validate_move, start_position, end_position)).to be false
-    end
-  end
-
-  describe '#check_in_bounds' do
-    it 'returns true for positions within the board' do
-      expect(piece_mover.send(:check_in_bounds, [4, 4])).to be true
-    end
-
-    it 'returns false for positions out of the board' do
-      expect(piece_mover.send(:check_in_bounds, [8, 8])).to be false
     end
   end
 

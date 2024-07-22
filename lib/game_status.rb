@@ -19,11 +19,9 @@ class GameStatus
       end
 
       @check = true
-      p move
-
-      nil
     end
-    p "check status is: #{@check}"
+    p @check
+    @check == true
   end
 
   private

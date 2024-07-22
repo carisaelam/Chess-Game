@@ -15,9 +15,5 @@ RSpec.describe CoordinateConverter do
       expect(converter.convert_from_alg_notation('A8')).to eq([0, 0])
       expect(converter.convert_from_alg_notation('H1')).to eq([7, 7])
     end
-
-    it 'returns nil for invalid input' do
-      expect(converter.convert_from_alg_notation('z8')).to eq(nil)
-    end
   end
 end

@@ -29,19 +29,12 @@ class CoordinateConverter
   # converts chess notation to board coordinates
   def convert_from_alg_notation(input)
     string = process_coordinate_input(input.downcase)
-    validate_coordinates(string)
-    return nil unless validate_coordinates(string)
 
     [square_coordinates[string[1]], square_coordinates[string[0]]]
   end
 
   def process_coordinate_input(input)
     [input[0], input[1]]
-  end
-
-  def validate_coordinates(input)
-    ('a'..'h').include?(input[0]) &&
-      (1..8).include?(input[1].to_f)
   end
 
   def square_coordinates

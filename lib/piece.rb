@@ -16,6 +16,7 @@ class Piece
   end
 
   def valid_move?(start_position, end_position)
+    p "valid move running start: #{start_position} end: #{end_position}"
     raise NotImplementedError, 'Method should be called from subclass'
   end
 
