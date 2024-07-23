@@ -12,7 +12,7 @@ class Piece
   end
 
   def to_s
-    "#{color.capitalize} #{self.class} #{position} - INSTANCE"
+    "#{color.capitalize} #{self.class} #{position}"
   end
 
   def valid_move?(start_position, end_position)

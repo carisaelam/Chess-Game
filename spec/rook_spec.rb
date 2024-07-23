@@ -21,7 +21,7 @@ RSpec.describe Rook do
 
   describe '#to_s' do
     it 'returns a string representation of the rook piece' do
-      expect(white_rook.to_s).to eq('White Rook [0, 0] - INSTANCE')
+      expect(white_rook.to_s).to eq('White Rook [0, 0]')
     end
   end
 

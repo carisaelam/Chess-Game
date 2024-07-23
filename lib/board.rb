@@ -45,6 +45,7 @@ class Board
   #     end
   #   end
   # end
+  #
 
   def place_piece(piece, new_position)
     raise "Expected Piece, got #{piece.class}" unless piece.is_a?(Piece)

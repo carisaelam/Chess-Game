@@ -20,7 +20,7 @@ RSpec.describe Queen do
 
   describe '#to_s' do
     it 'returns a string representation of the queen piece' do
-      expect(white_queen.to_s).to eq('White Queen [0, 3] - INSTANCE')
+      expect(white_queen.to_s).to eq('White Queen [0, 3]')
     end
   end
 

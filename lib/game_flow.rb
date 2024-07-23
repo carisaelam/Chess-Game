@@ -3,17 +3,17 @@
 require_relative 'piece_mover'
 require_relative 'coordinate_converter'
 require_relative 'board'
-require_relative 'game_status'
+require_relative 'check_status'
 
 class GameFlow
-  attr_reader :board, :piece_mover, :coordinate_converter, :game_status
+  attr_reader :board, :piece_mover, :coordinate_converter, :check_status
   attr_accessor :color
 
-  def initialize(board, piece_mover, coordinate_converter, game_status)
+  def initialize(board, piece_mover, coordinate_converter, check_status)
     @board = board
     @piece_mover = piece_mover
     @coordinate_converter = coordinate_converter
-    @game_status = game_status
+    @check_status = check_status
     @color = :black
   end
 
@@ -29,35 +29,43 @@ class GameFlow
     end
   end
 
+  def check_for_check(start_point, end_point)
+    # loop to check for check
+    p 'Running check for check'
+    loop do
+      move_piece(start_point, end_point) # move the piece
+
+      break unless check_status.check?(color) # stop here unless the move would put your king in check
+
+      # if move puts king in check...
+
+      piece_mover.move_piece(end_point, start_point) # Revert the move
+      puts 'That would put your king in check. Try again.'
+      check_status.reset_check # resets check to false
+      print 'Select a piece: '
+
+      # re-do select move and loop again
+      start_point = check_start_input
+      print 'Select an end point: '
+      end_point = check_alg_input(gets.chomp)
+    end
+  end
+
   private
 
   def player_turn
-    enemy_color = color == :black ? :white : :black
     puts "#{color.capitalize}'s turn"
 
-    if game_status.check?(color) == true
+    if check_status.check?(color) == true
       p 'You are in CHECK. You must get out of check'
-      p 'GAME OVER' if game_status.checkmate?(color) == true
+      p 'GAME OVER' if check_status.checkmate?(color) == true
     end
     print 'Select a piece: '
     start_point = check_start_input
     print 'Select an end point: '
     end_point = check_alg_input(gets.chomp)
 
-    loop do
-      move_piece(start_point, end_point)
-
-      break unless game_status.check?(color)
-
-      piece_mover.move_piece(end_point, start_point) # Revert the move
-      puts 'That would put your king in check. Try again.'
-      game_status.reset_check
-      print 'Select a piece: '
-
-      start_point = check_start_input
-      print 'Select an end point: '
-      end_point = check_alg_input(gets.chomp)
-    end
+    check_for_check(start_point, end_point)
 
     board.print_board
   end
@@ -115,7 +123,7 @@ end
 
 # [ ] Validate Moves
 #   [x] Check if a move is legal based on piece type and current board state.
-#   [ ] Ensure that moves do not put the player's king in check.
+#   [x] Ensure that moves do not put the player's king in check.
 
 # [ ] Check Game Status
 #   [ ] Determine if the game has ended (checkmate, stalemate).

@@ -20,7 +20,7 @@ RSpec.describe Bishop do
 
   describe '#to_s' do
     it 'returns a string representation of the bishop piece' do
-      expect(white_bishop.to_s).to eq('White Bishop [0, 2] - INSTANCE')
+      expect(white_bishop.to_s).to eq('White Bishop [0, 2]')
     end
   end
 

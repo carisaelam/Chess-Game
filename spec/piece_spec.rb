@@ -17,7 +17,7 @@ RSpec.describe Piece do
 
   describe '#to_s' do
     it 'returns a string representation of the piece' do
-      expect(piece.to_s).to eq('White Piece [0, 0] - INSTANCE')
+      expect(piece.to_s).to eq('White Piece [0, 0]')
     end
   end
 
