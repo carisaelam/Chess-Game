@@ -26,22 +26,36 @@ class GameFlow
     loop do
       player_turn
       toggle_color
-      next unless game_status.check?(color) == true
-
-      p 'That would put your king in check. Try again.'
-      toggle_color
     end
   end
 
   private
 
   def player_turn
-    p "#{color.capitalize}'s turn"
-    print 'Select a piece '
+    enemy_color = color == :black ? :white : :black
+    puts "#{color.capitalize}'s turn"
+
+    p 'You are in CHECK' if game_status.check?(color) == true
+    print 'Select a piece: '
     start_point = check_start_input
-    print 'Select an end point '
+    print 'Select an end point: '
     end_point = check_alg_input(gets.chomp)
-    move_piece(start_point, end_point)
+
+    loop do
+      move_piece(start_point, end_point)
+
+      break unless game_status.check?(color)
+
+      piece_mover.move_piece(end_point, start_point) # Revert the move
+      puts 'That would put your king in check. Try again.'
+      print 'Select a piece: '
+
+      game_status.reset_check
+      start_point = check_start_input
+      print 'Select an end point: '
+      end_point = check_alg_input(gets.chomp)
+    end
+
     board.print_board
   end
 

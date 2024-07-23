@@ -10,11 +10,12 @@ class GameStatus
     @check = false
   end
 
-  # determines if the other team's king is in check
+  # determines if your king is in check
   def check?(color)
-    all_moves = all_valid_moves_on_board(color)
+    enemy_color = color == :black ? :white : :black
+    all_moves = all_valid_moves_on_board(enemy_color)
     all_moves.each do |move|
-      unless board.piece_at(move).color != color && board.piece_at(move).color != :empty && board.piece_at(move).instance_of?(King)
+      unless board.piece_at(move).color != enemy_color && board.piece_at(move).color != :empty && board.piece_at(move).instance_of?(King)
         next
       end
 
@@ -22,6 +23,10 @@ class GameStatus
     end
     p @check
     @check == true
+  end
+
+  def reset_check
+    @check = false
   end
 
   private
