@@ -35,7 +35,10 @@ class GameFlow
     enemy_color = color == :black ? :white : :black
     puts "#{color.capitalize}'s turn"
 
-    p 'You are in CHECK' if game_status.check?(color) == true
+    if game_status.check?(color) == true
+      p 'You are in CHECK. You must get out of check'
+      p 'GAME OVER' if game_status.checkmate?(color) == true
+    end
     print 'Select a piece: '
     start_point = check_start_input
     print 'Select an end point: '
@@ -48,9 +51,9 @@ class GameFlow
 
       piece_mover.move_piece(end_point, start_point) # Revert the move
       puts 'That would put your king in check. Try again.'
+      game_status.reset_check
       print 'Select a piece: '
 
-      game_status.reset_check
       start_point = check_start_input
       print 'Select an end point: '
       end_point = check_alg_input(gets.chomp)

@@ -1,13 +1,19 @@
 require_relative 'board'
 require_relative 'piece'
+require_relative 'piece_mover'
 
 class GameStatus
-  attr_reader :board
+  attr_reader :board, :piece_mover
   attr_accessor :check
 
   def initialize(board)
     @board = board
     @check = false
+  end
+
+  # determines if your king is in checkmate
+  def checkmate?(color)
+    p 'running checkmate'
   end
 
   # determines if your king is in check
@@ -42,6 +48,19 @@ class GameStatus
       all_moves << piece.all_valid_moves(piece.position)
     end
     all_moves.flatten(1)
+  end
+
+  # lists all pieces and their valid moves
+  def all_piece_moves_on_board(color)
+    all_piece_moves = []
+    all_positions.each do |square|
+      piece = board.piece_at(square)
+      next if piece.instance_of?(EmptyPiece)
+      next if piece.color != color
+
+      all_piece_moves.push({ piece.position => piece.all_valid_moves(piece.position) })
+    end
+    all_piece_moves
   end
 
   # generate list of all positions on board [x, y]

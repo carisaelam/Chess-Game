@@ -26,7 +26,7 @@ RSpec.describe GameStatus do
     end
 
     it 'sets check to true if the king is in check' do
-      game_status.check?(:white)
+      game_status.check?(:black)
       expect(game_status.check).to be true
     end
 
