@@ -8,6 +8,7 @@ RSpec.describe Pawn do
   let(:board) { instance_double('Board') }
   let(:white_pawn) { Pawn.new(:white, [6, 4], board) }
   let(:black_pawn) { Pawn.new(:black, [1, 4], board) }
+  let(:black_first_move_pawn) { Pawn.new(:black, [1, 0], board) }
 
   describe '#unicode_symbol' do
     it 'returns the correct symbol for a white pawn' do
@@ -40,6 +41,11 @@ RSpec.describe Pawn do
         expect(white_pawn.valid_move?([6, 4], [5, 5])).to be true
         expect(black_pawn.valid_move?([1, 4], [2, 3])).to be true
         expect(black_pawn.valid_move?([1, 4], [2, 5])).to be true
+      end
+
+      it 'returns true for double step on first move' do
+        allow(board).to receive(:piece_at).with([1, 1]).and_return(instance_double('Piece', color: :black))
+        expect(black_first_move_pawn.valid_move?([1, 0], [3, 0])).to be true
       end
     end
 
