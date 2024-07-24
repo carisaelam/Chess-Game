@@ -28,8 +28,12 @@ class Pawn < Piece
     moves = []
 
     forward = color == :white ? [row - 1, col] : [row + 1, col]
+    double_forward = color == :white ? [row - 2, col] : [row + 2, col]
     left_diagonal = color == :white ? [row - 1, col - 1] : [row + 1, col + 1]
     right_diagonal = color == :white ? [row - 1, col + 1] : [row + 1, col - 1]
+
+    # allow for two moves forward on first turn for each piece only
+    add_valid_move(moves, double_forward, :empty) if (row == 6 && color == :white) || (row == 1 && color == :black)
 
     add_valid_move(moves, forward, :empty)
     add_valid_move(moves, left_diagonal, color, true)

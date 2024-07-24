@@ -6,10 +6,10 @@ require_relative 'board'
 require_relative 'check_status'
 
 class GameFlow
-  attr_reader :board, :piece_mover, :coordinate_converter, :check_status
+  attr_reader :board, :piece_mover, :coordinate_converter, :check_status, :count
   attr_accessor :color
 
-  def initialize(board, piece_mover, coordinate_converter, check_status)
+  def initialize(board, piece_mover, coordinate_converter, check_status, count = 0)
     @board = board
     @piece_mover = piece_mover
     @coordinate_converter = coordinate_converter
@@ -57,6 +57,7 @@ class GameFlow
   private
 
   def player_turn
+    p "Turn count: #{board.current_count}"
     puts "#{color.capitalize}'s turn"
 
     if check_status.check?(color) == true
@@ -70,6 +71,7 @@ class GameFlow
 
     check_for_check(start_point, end_point)
 
+    board.increment_count
     board.print_board
   end
 

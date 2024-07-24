@@ -34,6 +34,7 @@ class Board
     @board = initialize_board
     starting_positions
     @piece_mover = PieceMover.new(self)
+    @count = 1
   end
 
   # DELETE THIS METHOD
@@ -46,6 +47,14 @@ class Board
   #   end
   # end
   #
+  #
+  def increment_count
+    @count += 1
+  end
+
+  def current_count
+    @count
+  end
 
   def place_piece(piece, new_position)
     raise "Expected Piece, got #{piece.class}" unless piece.is_a?(Piece)
