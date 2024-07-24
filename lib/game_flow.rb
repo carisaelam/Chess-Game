@@ -31,14 +31,17 @@ class GameFlow
 
   def check_for_check(start_point, end_point)
     # loop to check for check
-    p 'Running check for check'
+    p 'Running check for check in GameFlow'
     loop do
+      p 'moving piece...'
       move_piece(start_point, end_point) # move the piece
+
+      p "checkstatus: #{check_status.check?(color)}"
 
       break unless check_status.check?(color) # stop here unless the move would put your king in check
 
       # if move puts king in check...
-
+      check_status.reset_check
       piece_mover.move_piece(end_point, start_point) # Revert the move
       puts 'That would put your king in check. Try again.'
       check_status.reset_check # resets check to false
@@ -100,9 +103,7 @@ class GameFlow
   def move_piece(start_position, end_position)
     unless piece_mover.validate_move(start_position, end_position)
       puts 'Not a valid move for that piece. Pick another end point'
-      p "start: #{start_position} end: #{end_position}"
       new_end = check_alg_input(gets.chomp)
-      p "new end: #{new_end}"
       move_piece(start_position, new_end)
     end
 

@@ -21,23 +21,23 @@ class CheckStatus
 
     checkmate = all_friendly_pieces.all? do |piece|
       piece.all_valid_moves(piece.position).none? do |move|
+        p "move: #{move}"
+        p "escape? #{can_escape_check?(piece, move)}"
         can_escape_check?(piece, move)
       end
     end
 
-    if checkmate == true
-      p 'CHECKMATE'
-    else
-      nil
-    end
+    return unless checkmate == true
+
+    p 'CHECKMATE'
   end
 
   def can_escape_check?(piece, move_position)
     simulate_move(piece, move_position)
-    !check?(piece.color)
   end
 
   def simulate_move(piece, move_position)
+    p "simulating move #{piece.position} to #{move_position}"
     original_position = piece.position
     piece_mover.move_piece(original_position, move_position)
     in_check = check?(piece.color)
@@ -53,16 +53,19 @@ class CheckStatus
 
   # Determines if your king is in check
   def check?(color)
+    p "starting check. status of check is #{@check}"
     enemy_color = determine_enemy_color(color)
     enemy_moves = collect_enemy_moves(enemy_color)
 
-    @check = enemy_moves.any? do |position, moves|
+    @check = enemy_moves.any? do |_, moves|
       moves.any? do |move_position|
         check_if_in_check?(color, move_position)
       end
     end
 
-    p "Check on #{color}" if @check
+    p "now status of check is #{@check}"
+
+    p "Check on #{color}" if @check == true
     @check
   end
 
@@ -74,8 +77,13 @@ class CheckStatus
     all_valid_moves_on_board(enemy_color)
   end
 
+  # returns true if enemy move_position
   def check_if_in_check?(color, move_position)
     potential_end_point = board.piece_at(move_position)
+    return false if potential_end_point.instance_of?(EmptyPiece)
+
+    p "running check_if_in_check? for #{move_position}  potential_end_point: #{potential_end_point}"
+
     potential_end_point.color == color && potential_end_point.instance_of?(King)
   end
 
@@ -91,7 +99,9 @@ class CheckStatus
     all_positions.each do |square|
       piece = board.piece_at(square)
       next if piece.instance_of?(EmptyPiece) || piece.color != color
+      next if piece.all_valid_moves(piece.position).empty?
 
+      puts "moves for #{piece} include #{piece.all_valid_moves(piece.position)}"
       all_moves[piece.position] = piece.all_valid_moves(piece.position)
     end
     all_moves.reject { |position, moves| moves.empty? }

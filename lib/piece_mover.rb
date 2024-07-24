@@ -9,7 +9,6 @@ class PieceMover
 
   # copies start_position piece onto the end_position piece
   def move_piece(start_position, end_position)
-    # p "move piece running on #{start_position}, #{end_position}"
     set_pieces(start_position, end_position)
     clear_pieces(start_position)
   end

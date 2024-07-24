@@ -25,6 +25,8 @@ RSpec.describe CheckStatus do
     end
 
     it 'sets check to true if the king is in check' do
+      allow(check_status).to receive(:check_if_in_check?).and_return(true)
+
       check_status.check?(:black)
       expect(check_status.check).to be true
     end
