@@ -33,6 +33,7 @@ class CheckStatus
     else
       p 'NO checkmate'
     end
+    checkmate
   end
 
   def can_escape_check?(piece, move_position)

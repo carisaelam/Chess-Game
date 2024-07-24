@@ -26,31 +26,7 @@ class GameFlow
     loop do
       player_turn
       toggle_color
-    end
-  end
-
-  def check_for_check(start_point, end_point)
-    # loop to check for check
-    p 'Running check for check in GameFlow'
-    loop do
-      p 'moving piece...'
-      move_piece(start_point, end_point) # move the piece
-
-      p "checkstatus: #{check_status.check?(color)}"
-
-      break unless check_status.check?(color) # stop here unless the move would put your king in check
-
-      # if move puts king in check...
-      check_status.reset_check
-      piece_mover.move_piece(end_point, start_point) # Revert the move
-      puts 'That would put your king in check. Try again.'
-      check_status.reset_check # resets check to false
-      print 'Select a piece: '
-
-      # re-do select move and loop again
-      start_point = check_start_input
-      print 'Select an end point: '
-      end_point = check_alg_input(gets.chomp)
+      break if check_status.checkmate?(color)
     end
   end
 
@@ -73,6 +49,31 @@ class GameFlow
 
     board.increment_count
     board.print_board
+  end
+
+  def check_for_check(start_point, end_point)
+    # loop to check for check
+    p 'Running check for check in GameFlow'
+    loop do
+      p 'moving piece...'
+      piece_mover.move_piece(start_point, end_point) # move the piece
+
+      p "checkstatus: #{check_status.check?(color)}"
+
+      break unless check_status.check?(color) # stop here unless the move would put your king in check
+
+      # if move puts king in check...
+      check_status.reset_check
+      piece_mover.move_piece(end_point, start_point) # Revert the move
+      puts 'That would put your king in check. Try again.'
+      check_status.reset_check # resets check to false
+      print 'Select a piece: '
+
+      # re-do select move and loop again
+      start_point = check_start_input
+      print 'Select an end point: '
+      end_point = check_alg_input(gets.chomp)
+    end
   end
 
   def check_start_input
@@ -101,16 +102,6 @@ class GameFlow
 
     coordinate_converter.convert_from_alg_notation(input)
   end
-
-  def move_piece(start_position, end_position)
-    unless piece_mover.validate_move(start_position, end_position)
-      puts 'Not a valid move for that piece. Pick another end point'
-      new_end = check_alg_input(gets.chomp)
-      move_piece(start_position, new_end)
-    end
-
-    piece_mover.move_piece(start_position, end_position)
-  end
 end
 
 # # GameFlow Class Goals
@@ -128,9 +119,9 @@ end
 #   [x] Check if a move is legal based on piece type and current board state.
 #   [x] Ensure that moves do not put the player's king in check.
 
-# [ ] Check Game Status
-#   [ ] Determine if the game has ended (checkmate, stalemate).
-#   [ ] Handle game-ending conditions and notify players.
+# [x] Check Game Status
+#   [x] Determine if the game has ended (checkmate, stalemate).
+#   [x] Handle game-ending conditions and notify players.
 
 # [x] Handle Player Input
 #   [x] Interpret player commands and translate them into moves.
@@ -140,9 +131,9 @@ end
 #   [x] Keep track of the current game state (e.g., active pieces, board configuration).
 #   [ ] Manage game history (optional, for undo/redo functionality).
 
-# [ ] Interface with Other Classes
+# [x] Interface with Other Classes
 #   [x] Coordinate with the `Board` class to update and query the board state.
 #   [x] Utilize `Piece` classes to validate and execute piece-specific moves.
 
-# [ ] Provide Game Status Information
-#   [ ] Display current game status (e.g., which player’s turn it is, if a player is in check).
+# [x] Provide Game Status Information
+#   [x] Display current game status (e.g., which player’s turn it is, if a player is in check).

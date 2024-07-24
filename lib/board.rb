@@ -46,8 +46,7 @@ class Board
   #     end
   #   end
   # end
-  #
-  #
+
   def increment_count
     @count += 1
   end
