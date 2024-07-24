@@ -14,7 +14,7 @@ class GameFlow
     @piece_mover = piece_mover
     @coordinate_converter = coordinate_converter
     @check_status = check_status
-    @color = :black
+    @color = :white
   end
 
   def toggle_color

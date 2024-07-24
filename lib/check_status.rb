@@ -21,27 +21,37 @@ class CheckStatus
 
     checkmate = all_friendly_pieces.all? do |piece|
       piece.all_valid_moves(piece.position).none? do |move|
+        p "piece: #{piece}"
         p "move: #{move}"
         p "escape? #{can_escape_check?(piece, move)}"
         can_escape_check?(piece, move)
       end
     end
 
-    return unless checkmate == true
-
-    p 'CHECKMATE'
+    if checkmate == true
+      p 'CHECKMATE'
+    else
+      p 'NO checkmate'
+    end
   end
 
   def can_escape_check?(piece, move_position)
-    simulate_move(piece, move_position)
+    p 'can escape check running'
+    !simulate_move(piece, move_position)
   end
 
   def simulate_move(piece, move_position)
     p "simulating move #{piece.position} to #{move_position}"
     original_position = piece.position
+    # if there is a piece in move_position, get it's info
+    captured_piece = board.piece_at(move_position)
+    p "captured_piece= #{captured_piece}"
     piece_mover.move_piece(original_position, move_position)
     in_check = check?(piece.color)
     piece_mover.move_piece(move_position, original_position) # Revert move
+    board.place_piece(captured_piece, move_position) # puts back captured piece
+    p "check that captured piece is back in place: #{board.piece_at(move_position)}"
+    p "simulated move #{piece.position} to #{move_position} resulted in check? #{in_check}"
     in_check
   end
 
