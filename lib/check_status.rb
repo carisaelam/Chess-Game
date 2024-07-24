@@ -28,11 +28,7 @@ class CheckStatus
       end
     end
 
-    if checkmate == true
-      p 'CHECKMATE'
-    else
-      p 'NO checkmate'
-    end
+    p "CHECKMATE! #{determine_enemy_color(color).capitalize} wins!" if checkmate == true
     checkmate
   end
 
@@ -52,7 +48,7 @@ class CheckStatus
     piece_mover.move_piece(move_position, original_position) # Revert move
     board.place_piece(captured_piece, move_position) # puts back captured piece
     # p "check that captured piece is back in place: #{board.piece_at(move_position)}"
-    p "simulated move #{piece.position} to #{move_position} resulted in check? #{in_check}"
+    # p "simulated move #{piece.position} to #{move_position} resulted in check? #{in_check}"
     in_check
   end
 
@@ -76,7 +72,7 @@ class CheckStatus
 
     # p "now status of check is #{@check}"
 
-    p "Check on #{color}" if @check == true
+    # p "Check on #{color}" if @check == true
     @check
   end
 

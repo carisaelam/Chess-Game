@@ -29,11 +29,9 @@ game.start
 # board.place_piece(EmptyPiece.new, [1, 4])
 # board.place_piece(EmptyPiece.new, [1, 5])
 # board.place_piece(EmptyPiece.new, [1, 6])
-# board.place_piece(Queen.new(:white, [2, 6], board), [2, 6])
-# board.place_piece(Bishop.new(:white, [2, 5], board), [2, 5])
 # board.place_piece(EmptyPiece.new, [1, 7])
 
-# board.place_piece(EmptyPiece.new, [6, 0])
+# # board.place_piece(EmptyPiece.new, [6, 0])
 # board.place_piece(EmptyPiece.new, [6, 1])
 # board.place_piece(EmptyPiece.new, [6, 2])
 # board.place_piece(EmptyPiece.new, [6, 3])
@@ -46,21 +44,21 @@ game.start
 # board.place_piece(EmptyPiece.new, [7, 1])
 # board.place_piece(EmptyPiece.new, [7, 2])
 # board.place_piece(EmptyPiece.new, [7, 3])
+# board.place_piece(EmptyPiece.new, [7, 4])
 # board.place_piece(EmptyPiece.new, [7, 5])
 # board.place_piece(EmptyPiece.new, [7, 6])
 # board.place_piece(EmptyPiece.new, [7, 7])
 
-# board.place_piece(Pawn.new(:white, [0, 1], board), [0, 1])
+# # board.place_piece(EmptyPiece.new, [0, 0])
+# board.place_piece(EmptyPiece.new, [0, 1])
 # board.place_piece(EmptyPiece.new, [0, 2])
 # board.place_piece(EmptyPiece.new, [0, 3])
-# board.place_piece(EmptyPiece.new, [0, 4])
+# # board.place_piece(EmptyPiece.new, [0, 4])
 # board.place_piece(EmptyPiece.new, [0, 5])
 # board.place_piece(EmptyPiece.new, [0, 6])
-# board.place_piece(King.new(:black, [0, 7], board), [0, 7])
+# board.place_piece(EmptyPiece.new, [0, 7])
 
-# queen = Queen.new(:black, [4, 4], board)
-
-# board.place_piece(queen, [6, 3])
+# piece_mover.move_piece([6, 0], [6, 1])
 # board.print_board
 
 # check_status.check?(:black)

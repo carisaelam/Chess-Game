@@ -49,10 +49,18 @@ class Rook < Piece
       # captures an enemy piece then stops
       break unless piece.color == :empty
     end
-    castle_short_move = color == :white ? [row - 2, col] : [row + 2, col]
+   
     p 'CASTLE SHORT AVAILABLE' if castle_short_move_available?
     p 'CASTLE LONG AVAILABLE' if castle_long_move_available?
     moves
+  end
+
+  def castle_short_move_available?
+    castle_short_move_white || castle_short_move_black
+  end
+
+  def castle_long_move_available?
+    castle_long_move_white || castle_long_move_black
   end
 
   def castle_short_move_white
@@ -69,10 +77,6 @@ class Rook < Piece
       board.piece_at([0, 4]).color == :black && board.piece_at([0, 4]).instance_of?(King)
   end
 
-  def castle_short_move_available?
-    castle_short_move_white || castle_short_move_black
-  end
-
   def castle_long_move_white
     board.piece_at([7, 0]).color == :white && board.piece_at([7, 0]).instance_of?(Rook) &&
       board.piece_at([7, 1]).color == :empty &&
@@ -87,9 +91,5 @@ class Rook < Piece
       board.piece_at([0, 2]).color == :empty &&
       board.piece_at([0, 3]).color == :empty &&
       board.piece_at([0, 4]).color == :black && board.piece_at([0, 4]).instance_of?(King)
-  end
-
-  def castle_long_move_available?
-    castle_long_move_white || castle_long_move_black
   end
 end

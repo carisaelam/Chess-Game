@@ -15,6 +15,7 @@ class Piece
     "#{color.capitalize} #{self.class} #{position}"
   end
 
+  # passes responsibility to piece subclass to define valid moves
   def valid_move?(start_position, end_position)
     p "valid move running start: #{start_position} end: #{end_position}"
     raise NotImplementedError, 'Method should be called from subclass'
@@ -32,4 +33,5 @@ class Piece
     piece = @board.piece_at(position)
     piece.color != color || piece.color == :empty
   end
+  
 end
