@@ -35,6 +35,45 @@ class Board
     starting_positions
     @piece_mover = PieceMover.new(self)
     @count = 1
+    @castle_available = false
+  end
+
+  def castle(distance, color)
+    p "distance: #{distance}"
+    p "color: #{color}"
+    return unless @castle_available == true
+
+    white_short_castle_move if distance == 'short' && color == :white
+
+    return unless distance == 'short' && color == :black
+
+    black_short_castle_move
+    @castle_available = false
+  end
+
+  def update_castle_available(status, distance, color)
+    @castle_available = status
+    castle(distance, color)
+  end
+
+  def white_short_castle_move
+    p 'Do you want to castle? Y/N'
+    input = gets.chomp
+    return unless input.downcase == 'y'
+
+    @piece_mover.move_piece([7, 4], [7, 6])
+    @piece_mover.move_piece([7, 7], [7, 5])
+    print_board
+  end
+
+  def black_short_castle_move
+    p 'Do you want to castle? Y/N'
+    input = gets.chomp
+    return unless input.downcase == 'y'
+
+    @piece_mover.move_piece([0, 4], [0, 6])
+    @piece_mover.move_piece([0, 7], [0, 5])
+    print_board
   end
 
   # DELETE THIS METHOD

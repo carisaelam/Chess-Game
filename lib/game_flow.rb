@@ -18,6 +18,7 @@ class GameFlow
   end
 
   def start
+    welcome
     board.print_board
     loop do
       player_turn
@@ -36,9 +37,14 @@ class GameFlow
     board.print_board
   end
 
+  def welcome
+    puts "Welcome to Chess!\n\n"
+    puts "Player 1 is white, and Player 2 is black.\n\n"
+  end
+
   def turn_information
-    p "Turn count: #{board.current_count}"
-    puts "#{color.capitalize}'s turn"
+    puts
+    puts "It is #{color.capitalize}'s turn"
   end
 
   def turn_check_status
@@ -49,7 +55,7 @@ class GameFlow
   end
 
   def turn_piece_selection
-    print 'Select a piece: '
+    print "#{color.capitalize}, select a piece: "
     start_point = check_start_input
     print 'Select an end point: '
     end_point = check_alg_input(gets.chomp)

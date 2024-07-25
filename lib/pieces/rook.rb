@@ -49,21 +49,31 @@ class Rook < Piece
       # captures an enemy piece then stops
       break unless piece.color == :empty
     end
-   
-    p 'CASTLE SHORT AVAILABLE' if castle_short_move_available?
-    p 'CASTLE LONG AVAILABLE' if castle_long_move_available?
+    check_for_castle
     moves
   end
 
+  def check_for_castle
+    castle_short_available?(other_color) if castle_short_move_available?
+    castle_long_available?(other_color) if castle_long_move_available?
+  end
+
+  def other_color
+    other_color = color == :white ? :black : :white
+  end
+
   def castle_short_move_available?
+    # p "'castle_short_move_available running'on #{other_color}"
     castle_short_move_white || castle_short_move_black
   end
 
   def castle_long_move_available?
+    # p " 'castle_long_move_available running on #{other_color}'"
     castle_long_move_white || castle_long_move_black
   end
 
   def castle_short_move_white
+    # p "'castle_short_move_white running on #{other_color}'"
     board.piece_at([7, 7]).color == :white && board.piece_at([7, 7]).instance_of?(Rook) &&
       board.piece_at([7, 6]).color == :empty &&
       board.piece_at([7, 5]).color == :empty &&
@@ -71,6 +81,7 @@ class Rook < Piece
   end
 
   def castle_short_move_black
+    # p "castle_short_move_black running on #{other_color}'"
     board.piece_at([0, 7]).color == :black && board.piece_at([0, 7]).instance_of?(Rook) &&
       board.piece_at([0, 6]).color == :empty &&
       board.piece_at([0, 5]).color == :empty &&
@@ -78,6 +89,7 @@ class Rook < Piece
   end
 
   def castle_long_move_white
+    # p "'castle_long_move_white running on #{other_color}'"
     board.piece_at([7, 0]).color == :white && board.piece_at([7, 0]).instance_of?(Rook) &&
       board.piece_at([7, 1]).color == :empty &&
       board.piece_at([7, 2]).color == :empty &&
@@ -86,6 +98,7 @@ class Rook < Piece
   end
 
   def castle_long_move_black
+    # p "'castle_long_move_black running on #{other_color}'"
     board.piece_at([0, 0]).color == :black && board.piece_at([0, 0]).instance_of?(Rook) &&
       board.piece_at([0, 1]).color == :empty &&
       board.piece_at([0, 2]).color == :empty &&

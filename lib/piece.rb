@@ -3,12 +3,22 @@
 require_relative 'board'
 
 class Piece
-  attr_reader :color, :position, :board
+  attr_reader :color, :position, :board, :castle_available
 
   def initialize(color, position, board)
     @color = color
     @position = position
     @board = board
+  end
+
+  def castle_short_available?(color)
+    p "THE SHORT CASTLE IS AVAILABLE for #{color}"
+    board.update_castle_available(true, 'short', color)
+  end
+
+  def castle_long_available?(color)
+    p "THE LONG CASTLE IS AVAILABLE for #{color}"
+    board.castle('long', color)
   end
 
   def to_s
@@ -33,5 +43,4 @@ class Piece
     piece = @board.piece_at(position)
     piece.color != color || piece.color == :empty
   end
-  
 end

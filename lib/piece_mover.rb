@@ -22,6 +22,8 @@ class PieceMover
     valid_move_for_type(start_position, end_position)
   end
 
+
+
   private
 
   def valid_move_for_type(start_position, end_position)
