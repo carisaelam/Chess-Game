@@ -60,7 +60,41 @@ class GameFlow
     print 'Select an end point: '
     end_point = check_alg_input(gets.chomp)
 
-    check_for_check(start_point, end_point)
+    if king_or_rook?(start_point) && castling_possible?(start_point, end_point)
+      ask_for_castling(start_point, end_point)
+    else
+
+      check_for_check(start_point, end_point)
+    end
+  end
+
+  def king_or_rook?(position)
+    @board.piece_at(position).instance_of?(King) || @board.piece_at(position).instance_of?(Rook)
+  end
+
+  def castling_possible?(start_position, end_position)
+    @board.castle_short_move_available?(color) || @board.castle_long_move_available?(color)
+  end
+
+  def ask_for_castling(start_position, end_position)
+    puts 'Do you want to castle? Y/N'
+    input = gets.chomp.downcase
+
+    if input == 'y'
+      perform_castling
+    else
+      check_for_check(start_position, end_position)
+    end
+  end
+
+  def perform_castling
+    if @board.castle_short_move_available?(color)
+      @piece_mover.perform_short_castle(color)
+    elsif @board.castle_long_move_available?(color)
+      @piece_mover.perform_long_castle(color)
+    else
+      puts 'Castling is not available'
+    end
   end
 
   def toggle_color

@@ -35,57 +35,40 @@ class Board
     starting_positions
     @piece_mover = PieceMover.new(self)
     @count = 1
-    @castle_available = false
   end
 
-  def castle(distance, color)
-    p 'running castle'
-    p "distance: #{distance}"
-    p "color: #{color}"
-    return unless @castle_available == true
-
-    white_short_castle_move if distance == 'short' && color == :white
-    return unless white_short_castle_move == true
-
-    # return unless distance == 'short' && color == :black
-
-    # black_short_castle_move
-    @castle_available = false
-  end
-
-  def update_castle_available(status, distance, color)
-    @castle_available = status
-    castle(distance, color)
-  end
-
-  def white_short_castle_move
-    p 'running white short castle move'
-    p 'Do you want to castle? Y/N'
-    input = gets.chomp
-    p "your input was #{input}"
-    unless input.downcase == 'y'
-      @castle_available = false
-      p 'castling not performed'
-      return false
+  def castle_short_move_available?(color)
+    if color == :white
+      piece_at([7, 7]).color == :white &&
+        piece_at([7, 6]).color == :empty &&
+        piece_at([7, 5]).color == :empty &&
+        piece_at([7, 4]).color == :white &&
+        piece_at([7, 4]).instance_of?(King)
+    else
+      piece_at([0, 7]).color == :black &&
+        piece_at([0, 6]).color == :empty &&
+        piece_at([0, 5]).color == :empty &&
+        piece_at([0, 4]).color == :black &&
+        piece_at([0, 4]).instance_of?(King)
     end
-    @piece_mover.move_piece([7, 4], [7, 6])
-    @piece_mover.move_piece([7, 7], [7, 5])
-    print_board
-    true
   end
 
-  def black_short_castle_move
-    p 'running black short castle move '
-    p 'Do you want to castle? Y/N'
-    input = gets.chomp
-    unless input.downcase == 'y'
-      @castle_available = false
-      return nil
+  def castle_long_move_available?(color)
+    if color == :white
+      piece_at([7, 0]).color == :white &&
+        piece_at([7, 1]).color == :empty &&
+        piece_at([7, 2]).color == :empty &&
+        piece_at([7, 3]).color == :empty &&
+        piece_at([7, 4]).color == :white &&
+        piece_at([7, 4]).instance_of?(King)
+    else
+      piece_at([0, 0]).color == :black &&
+        piece_at([0, 1]).color == :empty &&
+        piece_at([0, 2]).color == :empty &&
+        piece_at([0, 3]).color == :empty &&
+        piece_at([0, 4]).color == :black &&
+        piece_at([0, 4]).instance_of?(King)
     end
-
-    @piece_mover.move_piece([0, 4], [0, 6])
-    @piece_mover.move_piece([0, 7], [0, 5])
-    print_board
   end
 
   # DELETE THIS METHOD

@@ -22,7 +22,25 @@ class PieceMover
     valid_move_for_type(start_position, end_position)
   end
 
+  def perform_short_castle(color)
+    if color == :white
+      move_piece([7, 4], [7, 6])
+      move_piece([7, 7], [7, 5])
+    else
+      move_piece([0, 4], [0, 6])
+      move_piece([0, 7], [0, 5])
+    end
+  end
 
+  def perform_long_castle(color)
+    if color == :white
+      move_piece([7, 0], [7, 3])
+      move_piece([7, 4], [7, 2])
+    else
+      move_piece([0, 0], [0, 3])
+      move_piece([0, 4], [0, 2])
+    end
+  end
 
   private
 
