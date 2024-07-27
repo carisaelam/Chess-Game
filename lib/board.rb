@@ -80,7 +80,7 @@ class Board
     end_position[0] == if color == :white
                          0
                        else
-                         BOARD_SIZE
+                         BOARD_SIZE - 1
                        end
   end
 

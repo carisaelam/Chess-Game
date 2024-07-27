@@ -61,8 +61,9 @@ class GameFlow
     end_point = check_alg_input(gets.chomp)
 
     if pawn?(start_point) && promotion_possible?(color, end_point)
+      move_piece(start_point, end_point)
       p 'about to aske_for_promotion'
-      ask_for_promotion(color)
+      ask_for_promotion(end_point, color)
     elsif king_or_rook?(start_point) && castling_possible?(start_point, end_point)
       ask_for_castling(start_point, end_point)
     else
@@ -78,7 +79,7 @@ class GameFlow
     @board.promotion_possible?(color, end_position)
   end
 
-  def ask_for_promotion(color)
+  def ask_for_promotion(position, color)
     puts "You're getting promoted!!"
     puts "your color is #{color}"
     puts 'Q - Queen, K - Knight, B - Bishop, R - Rook'
@@ -98,6 +99,22 @@ class GameFlow
         ask_for_promotion(color)
       end
     p "you selected: #{piece_selected}"
+    perform_promotion(position, color, piece_selected)
+  end
+
+  def perform_promotion(position, color, piece_selected)
+    piece =
+      case piece_selected
+      when 'Queen'
+        Queen.new(color, position, board)
+      when 'Knight'
+        Knight.new(color, position, board)
+      when 'Bishop'
+        Bishop.new(color, position, board)
+      when 'Rook'
+        Rook.new(color, position, board)
+      end
+    @board.place_piece(piece, position)
   end
 
   def king_or_rook?(position)
