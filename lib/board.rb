@@ -40,12 +40,14 @@ class Board
   def castle_short_move_available?(color)
     if color == :white
       piece_at([7, 7]).color == :white &&
+        piece_at([7, 7]).instance_of?(Rook) &&
         piece_at([7, 6]).color == :empty &&
         piece_at([7, 5]).color == :empty &&
         piece_at([7, 4]).color == :white &&
         piece_at([7, 4]).instance_of?(King)
     else
       piece_at([0, 7]).color == :black &&
+        piece_at([0, 7]).instance_of?(Rook) &&
         piece_at([0, 6]).color == :empty &&
         piece_at([0, 5]).color == :empty &&
         piece_at([0, 4]).color == :black &&
@@ -56,6 +58,7 @@ class Board
   def castle_long_move_available?(color)
     if color == :white
       piece_at([7, 0]).color == :white &&
+        piece_at([7, 0]).instance_of?(Rook) &&
         piece_at([7, 1]).color == :empty &&
         piece_at([7, 2]).color == :empty &&
         piece_at([7, 3]).color == :empty &&
@@ -63,6 +66,7 @@ class Board
         piece_at([7, 4]).instance_of?(King)
     else
       piece_at([0, 0]).color == :black &&
+        piece_at([0, 0]).instance_of?(Rook) &&
         piece_at([0, 1]).color == :empty &&
         piece_at([0, 2]).color == :empty &&
         piece_at([0, 3]).color == :empty &&

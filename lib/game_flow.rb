@@ -90,7 +90,7 @@ class GameFlow
   def perform_castling
     if @board.castle_short_move_available?(color)
       @piece_mover.perform_short_castle(color)
-    elsif @board.castle_long_move_available?(color)
+    elsif @board.castle_long_move_available(color)
       @piece_mover.perform_long_castle(color)
     else
       puts 'Castling is not available'

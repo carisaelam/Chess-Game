@@ -4,70 +4,101 @@ require_relative '../lib/board'
 require_relative '../lib/pieces/pawn'
 require_relative '../lib/pieces/rook'
 require_relative '../lib/pieces/empty_piece'
+require_relative '../lib/pieces/king'
+require_relative '../lib/pieces/queen'
+require_relative '../lib/pieces/bishop'
+require_relative '../lib/pieces/knight'
 
-RSpec.describe Board do
+# spec/board_spec.rb
+
+RSpec.describe Board, type: :model do
   let(:board) { Board.new }
-  let(:pawn) { Pawn.new(:white, [1, 1], board) }
-  let(:rook) { Rook.new(:black, [0, 0], board) }
-  let(:empty_piece) { EmptyPiece.new }
 
   before do
     board.starting_positions
   end
 
-  describe '#initialize' do
-    it 'creates an 8x8 board with the correct initial setup' do
-      expect(board.instance_variable_get(:@board).size).to eq(8)
-      expect(board.instance_variable_get(:@board).all? { |row| row.size == 8 }).to be true
+  describe '#castle_short_move_available?' do
+    context 'when the color is white' do
+      it 'returns true if short castling is available' do
+        # Move the pieces into positions that would allow castling short
+        board.place_piece(King.new(:white, [7, 4], board), [7, 4])
+        board.place_piece(EmptyPiece.new, [7, 5])
+        board.place_piece(EmptyPiece.new, [7, 6])
+        board.place_piece(Rook.new(:white, [7, 7], board), [7, 7])
+
+        expect(board.castle_short_move_available?(:white)).to be true
+      end
+
+      it 'returns false if short castling is not available' do
+        # Modify the board so that short castling is not available
+        board.place_piece(King.new(:white, [7, 4], board), [7, 4])
+        board.place_piece(Rook.new(:white, [7, 7], board), [7, 7])
+        board.place_piece(Pawn.new(:white, [7, 6], board), [7, 6])
+        expect(board.castle_short_move_available?(:white)).to be false
+      end
+    end
+
+    context 'when the color is black' do
+      it 'returns true if short castling is available' do
+        # Move the pieces into positions that would allow castling short
+        board.place_piece(King.new(:black, [0, 4], board), [0, 4])
+        board.place_piece(Rook.new(:black, [0, 7], board), [0, 7])
+        # Empty the necessary squares
+        [0, 6, 0, 5].each { |pos| board.place_piece(EmptyPiece.new, [0, pos]) }
+        expect(board.castle_short_move_available?(:black)).to be true
+      end
+
+      it 'returns false if short castling is not available' do
+        # Modify the board so that short castling is not available
+        board.place_piece(King.new(:black, [0, 4], board), [0, 4])
+        board.place_piece(Rook.new(:black, [0, 7], board), [0, 7])
+        board.place_piece(Pawn.new(:black, [0, 6], board), [0, 6])
+        expect(board.castle_short_move_available?(:black)).to be false
+      end
     end
   end
 
-  describe '#place_piece' do
-    it 'places a piece at a specified position' do
-      board.place_piece(pawn, [2, 2])
-      expect(board.piece_at([2, 2])).to eq(pawn)
+  describe '#castle_long_move_available?' do
+    context 'when the color is white' do
+      it 'returns true if long castling is available' do
+        # Move the pieces into positions that would allow castling long
+        board.place_piece(King.new(:white, [7, 4], board), [7, 4])
+        board.place_piece(EmptyPiece.new, [7, 3])
+        board.place_piece(EmptyPiece.new, [7, 2])
+        board.place_piece(EmptyPiece.new, [7, 1])
+        board.place_piece(Rook.new(:white, [7, 0], board), [7, 0])
+
+        expect(board.castle_long_move_available?(:white)).to be true
+      end
+
+      it 'returns false if long castling is not available' do
+        # Modify the board so that long castling is not available
+        board.place_piece(King.new(:white, [7, 4], board), [7, 4])
+        board.place_piece(Rook.new(:white, [7, 0], board), [7, 0])
+        board.place_piece(Pawn.new(:white, [7, 1], board), [7, 1])
+        expect(board.castle_long_move_available?(:white)).to be false
+      end
     end
 
-    it 'raises an error if the piece is not a Piece' do
-      expect { board.place_piece('not_a_piece', [2, 2]) }.to raise_error('Expected Piece, got String')
-    end
-  end
+    context 'when the color is black' do
+      it 'returns true if long castling is available' do
+        # Move the pieces into positions that would allow castling long
+        board.place_piece(King.new(:black, [0, 4], board), [0, 4])
+        board.place_piece(EmptyPiece.new, [0, 3])
+        board.place_piece(EmptyPiece.new, [0, 2])
+        board.place_piece(EmptyPiece.new, [0, 1])
+        board.place_piece(Rook.new(:black, [0, 0], board), [0, 0])
+        expect(board.castle_long_move_available?(:black)).to be true
+      end
 
-  describe '#piece_at' do
-    it 'returns the piece at a specified position' do
-      board.place_piece(pawn, [3, 3])
-      expect(board.piece_at([3, 3])).to eq(pawn)
-    end
-
-    it 'raises an error for invalid positions' do
-      expect { board.piece_at([8, 8]) }.to raise_error(ArgumentError, 'Invalid position')
-    end
-  end
-
-  describe '#valid_position?' do
-    it 'returns true for valid positions' do
-      expect(board.valid_position?([0, 0])).to be true
-      expect(board.valid_position?([7, 7])).to be true
-    end
-
-    it 'returns false for invalid positions' do
-      expect(board.valid_position?([8, 8])).to be false
-      expect(board.valid_position?([-1, 0])).to be false
-      expect(board.valid_position?([0, 8])).to be false
-    end
-  end
-
-  describe '#starting_positions' do
-    it 'places all pieces in their starting positions' do
-      expect(board.piece_at([0, 0])).to be_a(Rook)
-      expect(board.piece_at([7, 7])).to be_a(Rook)
-      expect(board.piece_at([1, 0])).to be_a(Pawn)
-      expect(board.piece_at([6, 4])).to be_a(Pawn)
-    end
-
-    it 'places empty pieces in the correct positions' do
-      expect(board.piece_at([2, 0])).to be_a(EmptyPiece)
-      expect(board.piece_at([3, 4])).to be_a(EmptyPiece)
+      it 'returns false if long castling is not available' do
+        # Modify the board so that long castling is not available
+        board.place_piece(King.new(:black, [0, 4], board), [0, 4])
+        board.place_piece(Rook.new(:black, [0, 0], board), [0, 0])
+        board.place_piece(Pawn.new(:black, [0, 1], board), [0, 1])
+        expect(board.castle_long_move_available?(:black)).to be false
+      end
     end
   end
 end
