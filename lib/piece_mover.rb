@@ -19,6 +19,7 @@ class PieceMover
   end
 
   def validate_move(start_position, end_position)
+    p "validate_move #{start_position}, #{end_position} result = #{valid_move_for_type(start_position, end_position)}"
     valid_move_for_type(start_position, end_position)
   end
 
@@ -45,6 +46,7 @@ class PieceMover
   private
 
   def valid_move_for_type(start_position, end_position)
+    p "running valid move for type in piecemover on #{start_position}"
     start_piece = start_point(start_position) # contents of start square
     return true if start_piece.valid_move?(start_position, end_position)
 
@@ -53,6 +55,7 @@ class PieceMover
 
   # return start_position from board
   def start_point(start_position)
+    p "running start point. piece is #{board.piece_at(start_position)}"
     board.piece_at(start_position)
   end
 
@@ -63,6 +66,7 @@ class PieceMover
 
   # copies the piece from the start position to the end position
   def set_pieces(start_position, end_position)
+    p 'runnign set pieces'
     piece = board.piece_at(start_position)
     raise 'No piece at start position' if piece.nil?
 

@@ -60,12 +60,44 @@ class GameFlow
     print 'Select an end point: '
     end_point = check_alg_input(gets.chomp)
 
-    if king_or_rook?(start_point) && castling_possible?(start_point, end_point)
+    if pawn?(start_point) && promotion_possible?(color, end_point)
+      p 'about to aske_for_promotion'
+      ask_for_promotion(color)
+    elsif king_or_rook?(start_point) && castling_possible?(start_point, end_point)
       ask_for_castling(start_point, end_point)
     else
-
       check_for_check(start_point, end_point)
     end
+  end
+
+  def pawn?(position)
+    @board.piece_at(position).instance_of?(Pawn)
+  end
+
+  def promotion_possible?(color, end_position)
+    @board.promotion_possible?(color, end_position)
+  end
+
+  def ask_for_promotion(color)
+    puts "You're getting promoted!!"
+    puts "your color is #{color}"
+    puts 'Q - Queen, K - Knight, B - Bishop, R - Rook'
+    input = gets.chomp.downcase
+    piece_selected =
+      case input
+      when 'q'
+        'Queen'
+      when 'k'
+        'Knight'
+      when 'b'
+        'Bishop'
+      when 'r'
+        'Rook'
+      else
+        'Not a valid selection. Try again.'
+        ask_for_promotion(color)
+      end
+    p "you selected: #{piece_selected}"
   end
 
   def king_or_rook?(position)
@@ -179,7 +211,7 @@ end
 #   [x] Update the board with the new piece positions.
 #   [ ] Handle special moves (e.g., castling, en passant).
 
-# [ ] Validate Moves
+# [x] Validate Moves
 #   [x] Check if a move is legal based on piece type and current board state.
 #   [x] Ensure that moves do not put the player's king in check.
 
@@ -191,7 +223,7 @@ end
 #   [x] Interpret player commands and translate them into moves.
 #   [x] Provide feedback to players on invalid moves or game status.
 
-# [ ] Maintain Game State
+# [x] Maintain Game State
 #   [x] Keep track of the current game state (e.g., active pieces, board configuration).
 #   [x] Manage game history (optional, for undo/redo functionality).
 

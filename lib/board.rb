@@ -75,6 +75,15 @@ class Board
     end
   end
 
+  def promotion_possible?(color, end_position)
+    p 'running promotion possible'
+    end_position[0] == if color == :white
+                         0
+                       else
+                         BOARD_SIZE
+                       end
+  end
+
   # DELETE THIS METHOD
   # def print_board_contents
   #   p 'PRINTING BOARD CONTENTS'
