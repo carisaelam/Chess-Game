@@ -34,6 +34,7 @@ class Rook < Piece
   private
 
   def generate_moves(row, col, row_change, col_change)
+    p 'running generate moves in rook'
     moves = []
     (1..7).each do |step|
       new_row = row + step * row_change
@@ -49,6 +50,7 @@ class Rook < Piece
       # captures an enemy piece then stops
       break unless piece.color == :empty
     end
+
     check_for_castle
     moves
   end
@@ -56,6 +58,7 @@ class Rook < Piece
   def check_for_castle
     castle_short_available?(other_color) if castle_short_move_available?
     castle_long_available?(other_color) if castle_long_move_available?
+    castle_short_move_available? || castle_long_move_available?
   end
 
   def other_color

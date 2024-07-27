@@ -13,6 +13,10 @@ class Piece
 
   def castle_short_available?(color)
     p "THE SHORT CASTLE IS AVAILABLE for #{color}"
+    p 'Do you want to castle? Y/N'
+    input = gets.chomp.downcase
+    board.update_castle_available(false, 'short', color) unless input == 'y'
+
     board.update_castle_available(true, 'short', color)
   end
 

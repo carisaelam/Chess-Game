@@ -67,6 +67,7 @@ class GameFlow
     @color = @color == :black ? :white : :black
   end
 
+  # actually moves piece
   def check_for_check(start_point, end_point)
     # loop to check for check
     # p 'Running check for check in GameFlow'

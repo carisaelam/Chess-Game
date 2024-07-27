@@ -39,15 +39,17 @@ class Board
   end
 
   def castle(distance, color)
+    p 'running castle'
     p "distance: #{distance}"
     p "color: #{color}"
     return unless @castle_available == true
 
     white_short_castle_move if distance == 'short' && color == :white
+    return unless white_short_castle_move == true
 
-    return unless distance == 'short' && color == :black
+    # return unless distance == 'short' && color == :black
 
-    black_short_castle_move
+    # black_short_castle_move
     @castle_available = false
   end
 
@@ -57,19 +59,29 @@ class Board
   end
 
   def white_short_castle_move
+    p 'running white short castle move'
     p 'Do you want to castle? Y/N'
     input = gets.chomp
-    return unless input.downcase == 'y'
-
+    p "your input was #{input}"
+    unless input.downcase == 'y'
+      @castle_available = false
+      p 'castling not performed'
+      return false
+    end
     @piece_mover.move_piece([7, 4], [7, 6])
     @piece_mover.move_piece([7, 7], [7, 5])
     print_board
+    true
   end
 
   def black_short_castle_move
+    p 'running black short castle move '
     p 'Do you want to castle? Y/N'
     input = gets.chomp
-    return unless input.downcase == 'y'
+    unless input.downcase == 'y'
+      @castle_available = false
+      return nil
+    end
 
     @piece_mover.move_piece([0, 4], [0, 6])
     @piece_mover.move_piece([0, 7], [0, 5])
