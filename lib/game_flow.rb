@@ -62,8 +62,8 @@ class GameFlow
   def turn_check_status
     return unless check_status.check?(color) == true
 
-    p "#{color.capitalize}: You are in CHECK. You must get out of check"
-    p 'GAME OVER' if check_status.checkmate?(color) == true
+    puts "#{color.capitalize}: You are in CHECK. You must get out of check"
+    puts 'GAME OVER' if check_status.checkmate?(color) == true
   end
 
   def turn_piece_selection

@@ -34,14 +34,14 @@ class Bishop < Piece
 
   def generate_moves(row, col, row_change, col_change)
     moves = []
-    (1..7).each do |step|
+    1.upto(7) do |step|
       new_row = row + (step * row_change)
       new_col = col + (step * col_change)
       next_move = [new_row, new_col]
       break unless in_bounds?(next_move)
 
       piece = @board.piece_at(next_move)
-      break if color == piece.color
+      break if piece.color == color
 
       moves << next_move
       break if piece.color != :empty
