@@ -12,7 +12,7 @@ RSpec.describe PieceMover do
   let(:start_position) { [1, 1] }
   let(:end_position) { [2, 1] }
   let(:empty_piece) { instance_double(EmptyPiece, color: :empty) }
-  let(:pawn) { instance_double(Pawn, color: :white) }
+  let(:pawn) { instance_double(Pawn, color: :white, valid_move?: true) }
 
   describe '#move_piece' do
     before do
@@ -53,10 +53,67 @@ RSpec.describe PieceMover do
     end
   end
 
+  describe '#perform_short_castle' do
+    context 'when color is white' do
+      it 'moves the king and rook to the short castle positions' do
+        expect(piece_mover).to receive(:move_piece).with([7, 4], [7, 6])
+        expect(piece_mover).to receive(:move_piece).with([7, 7], [7, 5])
+        piece_mover.perform_short_castle(:white)
+      end
+    end
+
+    context 'when color is black' do
+      it 'moves the king and rook to the short castle positions' do
+        expect(piece_mover).to receive(:move_piece).with([0, 4], [0, 6])
+        expect(piece_mover).to receive(:move_piece).with([0, 7], [0, 5])
+        piece_mover.perform_short_castle(:black)
+      end
+    end
+  end
+
+  describe '#perform_long_castle' do
+    context 'when color is white' do
+      it 'moves the king and rook to the long castle positions' do
+        expect(piece_mover).to receive(:move_piece).with([7, 0], [7, 3])
+        expect(piece_mover).to receive(:move_piece).with([7, 4], [7, 2])
+        piece_mover.perform_long_castle(:white)
+      end
+    end
+
+    context 'when color is black' do
+      it 'moves the king and rook to the long castle positions' do
+        expect(piece_mover).to receive(:move_piece).with([0, 0], [0, 3])
+        expect(piece_mover).to receive(:move_piece).with([0, 4], [0, 2])
+        piece_mover.perform_long_castle(:black)
+      end
+    end
+  end
+
+  describe '#valid_move_for_type' do
+    it 'returns true if the piece can make the move' do
+      allow(piece_mover).to receive(:start_point).with(start_position).and_return(pawn)
+      allow(pawn).to receive(:valid_move?).with(start_position, end_position).and_return(true)
+      expect(piece_mover.send(:valid_move_for_type, start_position, end_position)).to be true
+    end
+
+    it 'returns false if the piece cannot make the move' do
+      allow(piece_mover).to receive(:start_point).with(start_position).and_return(pawn)
+      allow(pawn).to receive(:valid_move?).with(start_position, end_position).and_return(false)
+      expect(piece_mover.send(:valid_move_for_type, start_position, end_position)).to be false
+    end
+  end
+
   describe '#start_point' do
     it 'returns the piece at the start position' do
       allow(board).to receive(:piece_at).with(start_position).and_return(pawn)
       expect(piece_mover.send(:start_point, start_position)).to eq(pawn)
+    end
+  end
+
+  describe '#end_point' do
+    it 'returns the piece at the end position' do
+      allow(board).to receive(:piece_at).with(end_position).and_return(pawn)
+      expect(piece_mover.send(:end_point, end_position)).to eq(pawn)
     end
   end
 

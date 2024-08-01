@@ -4,3 +4,4 @@ source 'https://rubygems.org'
 
 # gem "rails"
 gem 'rubocop', require: false
+gem 'simplecov', require: false, group: :test

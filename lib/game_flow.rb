@@ -23,7 +23,7 @@ class GameFlow
   def start
     welcome
     load_or_new
-    puts "New Game!\n\nType save at the start of any guess to save your game."
+    puts "New Game!\n\nType save at the start of any move to save your game."
     board.print_board
     loop do
       player_turn
