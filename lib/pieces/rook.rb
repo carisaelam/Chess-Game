@@ -37,8 +37,8 @@ class Rook < Piece
     # p 'running generate moves in rook'
     moves = []
     (1..7).each do |step|
-      new_row = row + step * row_change
-      new_col = col + step * col_change
+      new_row = row + (step * row_change)
+      new_col = col + (step * col_change)
       next_move = [new_row, new_col]
 
       break unless in_bounds?(next_move)

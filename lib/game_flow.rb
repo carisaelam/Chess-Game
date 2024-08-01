@@ -12,7 +12,7 @@ class GameFlow
   attr_reader :board, :piece_mover, :coordinate_converter, :check_status, :count
   attr_accessor :color
 
-  def initialize(board, piece_mover, coordinate_converter, check_status, count = 0)
+  def initialize(board, piece_mover, coordinate_converter, check_status, _count = 0)
     @board = board
     @piece_mover = piece_mover
     @coordinate_converter = coordinate_converter
@@ -107,7 +107,6 @@ class GameFlow
       when 'r'
         'Rook'
       else
-        'Not a valid selection. Try again.'
         ask_for_promotion(color)
       end
     p "you selected: #{piece_selected}"
@@ -133,7 +132,7 @@ class GameFlow
     @board.piece_at(position).instance_of?(King) || @board.piece_at(position).instance_of?(Rook)
   end
 
-  def castling_possible?(start_position, end_position)
+  def castling_possible?(_start_position, _end_position)
     @board.castle_short_move_available?(color) || @board.castle_long_move_available?(color)
   end
 

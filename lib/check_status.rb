@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'board'
 require_relative 'piece'
 require_relative 'piece_mover'
@@ -111,7 +113,7 @@ class CheckStatus
       # puts "moves for #{piece} include #{piece.all_valid_moves(piece.position)}"
       all_moves[piece.position] = piece.all_valid_moves(piece.position)
     end
-    all_moves.reject { |position, moves| moves.empty? }
+    all_moves.reject { |_position, moves| moves.empty? }
   end
 
   # generate list of all positions on board [x, y]

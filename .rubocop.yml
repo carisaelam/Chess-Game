@@ -1,0 +1,7 @@
+AllCops:
+  Exclude:
+    - 'spec/**/*'       # Exclude all files in the 'spec' directory
+    - 'test/**/*'       # Exclude all files in the 'test' directory
+
+
+  NewCops: enable

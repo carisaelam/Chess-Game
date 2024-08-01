@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'yaml'
 
 module Serialize
   def load_game
-    if File.exist?('saved_games') && !Dir.children('saved_games').empty?
+    if File.exist?('saved_games') && !Dir.empty?('saved_games')
       puts "Saved files: #{Dir.children('saved_games').join(', ')}"
       puts 'Type the name of your game (without the .yml)'
       filename = gets.chomp
@@ -14,7 +16,7 @@ module Serialize
   end
 
   def to_yaml(filename)
-    Dir.mkdir('saved_games') unless File.exist?('saved_games')
+    FileUtils.mkdir_p('saved_games')
     File.open("saved_games/#{filename}.yml", 'w') do |file|
       YAML.dump({
                   board: @board,

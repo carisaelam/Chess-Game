@@ -39,6 +39,4 @@ class King < Piece
     in_bounds_moves = moves.select { |move| in_bounds?(move) }
     in_bounds_moves.select { |move| check_colors(move) }
   end
-
- 
 end
