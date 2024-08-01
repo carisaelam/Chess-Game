@@ -4,6 +4,7 @@ require 'fileutils'
 
 require 'yaml'
 
+# handles save and load functionality
 module Serialize
   def load_game
     if File.exist?('saved_games') && !Dir.empty?('saved_games')

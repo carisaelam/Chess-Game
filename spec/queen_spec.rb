@@ -1,8 +1,3 @@
-# frozen_string_literal: true
-
-require_relative '../lib/pieces/queen'
-require_relative '../lib/board'
-
 RSpec.describe Queen do
   let(:board) { instance_double('Board') }
   let(:white_queen) { Queen.new(:white, [0, 3], board) }
@@ -26,25 +21,33 @@ RSpec.describe Queen do
 
   describe '#valid_move?' do
     before do
-      allow(board).to receive(:piece_at).and_return(instance_double('Piece', color: :empty))
+      allow(board).to receive(:piece_at).with(any_args).and_return(instance_double('Piece', color: :empty))
     end
 
     context 'when the move is valid' do
       it 'returns true for a valid diagonal move' do
+        allow(board).to receive(:piece_at).with([3, 6]).and_return(instance_double('Piece', color: :empty))
         expect(white_queen.valid_move?([0, 3], [3, 6])).to be true
       end
 
       it 'returns true for a valid vertical move' do
+        allow(board).to receive(:piece_at).with([4, 3]).and_return(instance_double('Piece', color: :empty))
         expect(white_queen.valid_move?([0, 3], [4, 3])).to be true
       end
 
       it 'returns true for a valid horizontal move' do
+        allow(board).to receive(:piece_at).with([0, 7]).and_return(instance_double('Piece', color: :empty))
         expect(white_queen.valid_move?([0, 3], [0, 7])).to be true
       end
     end
 
     context 'when the move is invalid' do
-      it 'returns false for an invalid move' do
+      it 'returns false for a move that is not diagonal, vertical, or horizontal' do
+        expect(white_queen.valid_move?([0, 3], [2, 6])).to be false
+      end
+
+      it 'returns false for a move blocked by a piece of the same color' do
+        allow(board).to receive(:piece_at).with([2, 6]).and_return(instance_double('Piece', color: :white))
         expect(white_queen.valid_move?([0, 3], [2, 6])).to be false
       end
     end

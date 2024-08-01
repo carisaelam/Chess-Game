@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# moves pieces on the board
 class PieceMover
   attr_reader :board
 

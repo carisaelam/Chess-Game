@@ -111,7 +111,7 @@ RSpec.describe Pawn do
       moves = []
       allow(board).to receive(:piece_at).with([5, 3]).and_return(instance_double('Piece', color: :black))
 
-      white_pawn.send(:add_valid_move, moves, [5, 3], :white, true)
+      white_pawn.send(:add_valid_move, moves, [5, 3], :white, enemy_check: true)
       expect(moves).to include([5, 3])
     end
 

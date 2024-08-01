@@ -3,6 +3,7 @@
 require_relative '../piece'
 require_relative '../board'
 
+# specifics for king pieces
 class King < Piece
   def unicode_symbol
     if color == :white
@@ -14,7 +15,6 @@ class King < Piece
 
   def valid_move?(start_position, end_position)
     all_moves = all_valid_moves(start_position)
-
     all_moves.include?(end_position)
   end
 

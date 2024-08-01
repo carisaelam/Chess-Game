@@ -2,6 +2,7 @@
 
 require_relative '../piece'
 
+# specifics for empty pieces
 class EmptyPiece < Piece
   def initialize
     super(:empty, [0, 0], nil)

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# converts from alg notation to board notation
 class CoordinateConverter
   SQUARE_COORDINATES = {
     'a' => 0,

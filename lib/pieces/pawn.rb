@@ -2,6 +2,7 @@
 
 require_relative '../piece'
 
+# specifics for pawn pieces
 class Pawn < Piece
   def unicode_symbol
     if color == :white
@@ -33,16 +34,19 @@ class Pawn < Piece
     right_diagonal = color == :white ? [row - 1, col + 1] : [row + 1, col - 1]
 
     # allow for two moves forward on first turn for each piece only
-    add_valid_move(moves, double_forward, :empty) if (row == 6 && color == :white) || (row == 1 && color == :black)
+    if (row == 6 && color == :white) || (row == 1 && color == :black)
+      add_valid_move(moves, double_forward, :empty,
+                     enemy_check: false)
+    end
 
-    add_valid_move(moves, forward, :empty)
-    add_valid_move(moves, left_diagonal, color, true)
-    add_valid_move(moves, right_diagonal, color, true)
+    add_valid_move(moves, forward, :empty, enemy_check: false)
+    add_valid_move(moves, left_diagonal, color, enemy_check: true)
+    add_valid_move(moves, right_diagonal, color, enemy_check: true)
 
     moves
   end
 
-  def add_valid_move(moves, position, _color_check, enemy_check = false)
+  def add_valid_move(moves, position, _color_check, enemy_check: false)
     return unless in_bounds?(position)
 
     piece_color = board.piece_at(position).color

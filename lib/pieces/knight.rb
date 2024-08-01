@@ -3,6 +3,7 @@
 require_relative '../piece'
 require_relative '../board'
 
+# specifics for knight pieces
 class Knight < Piece
   def unicode_symbol
     if color == :white

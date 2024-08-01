@@ -3,6 +3,7 @@
 require_relative '../piece'
 require_relative '../board'
 
+# specifics for rook pieces
 class Rook < Piece
   def unicode_symbol
     if color == :white
@@ -34,23 +35,18 @@ class Rook < Piece
   private
 
   def generate_moves(row, col, row_change, col_change)
-    # p 'running generate moves in rook'
-    moves = []
-    (1..7).each do |step|
+    (1..7).each_with_object([]) do |step, moves|
       new_row = row + (step * row_change)
       new_col = col + (step * col_change)
       next_move = [new_row, new_col]
 
-      break unless in_bounds?(next_move)
+      break moves unless in_bounds?(next_move)
 
       piece = @board.piece_at(next_move)
-      break if color == piece.color
+      break moves if color == piece.color
 
       moves << next_move
-      # captures an enemy piece then stops
-      break unless piece.color == :empty
+      break moves if piece.color != :empty
     end
-
-    moves
   end
 end

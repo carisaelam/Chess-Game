@@ -2,6 +2,7 @@
 
 require_relative 'board'
 
+# stores common attributes and methods for all pieces
 class Piece
   attr_reader :color, :position, :board, :castle_available
 

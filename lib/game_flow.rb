@@ -104,12 +104,12 @@ class GameFlow
 
   def ask_for_promotion(position, color)
     input = prompt_for_promotion_pick(color)
-    piece_selected = select_a_piece(input)
+    piece_selected = select_a_piece(input, position)
     perform_promotion(position, color, piece_selected)
   end
 
   # takes user input and runs ask_for_promotion if invalid input
-  def select_a_piece(input)
+  def select_a_piece(input, position)
     piece_names = {
       'q' => 'Queen',
       'k' => 'Knight',
@@ -117,7 +117,7 @@ class GameFlow
       'r' => 'Rook'
     }
 
-    piece_names[input] || ask_for_promotion(color)
+    piece_names[input] || ask_for_promotion(position, color)
   end
 
   def prompt_for_promotion_pick(color)

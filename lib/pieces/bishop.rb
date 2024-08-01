@@ -3,6 +3,7 @@
 require_relative '../piece'
 require_relative '../board'
 
+# specifics for bishop pieces
 class Bishop < Piece
   def unicode_symbol
     if color == :white
@@ -37,15 +38,13 @@ class Bishop < Piece
       new_row = row + (step * row_change)
       new_col = col + (step * col_change)
       next_move = [new_row, new_col]
-
       break unless in_bounds?(next_move)
 
       piece = @board.piece_at(next_move)
       break if color == piece.color
 
       moves << next_move
-      # captures an enemy piece then stops
-      break unless piece.color == :empty
+      break if piece.color != :empty
     end
     moves
   end
