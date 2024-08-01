@@ -4,8 +4,11 @@ require_relative 'piece_mover'
 require_relative 'coordinate_converter'
 require_relative 'board'
 require_relative 'check_status'
+require_relative 'serialize'
 
 class GameFlow
+  include Serialize
+
   attr_reader :board, :piece_mover, :coordinate_converter, :check_status, :count
   attr_accessor :color
 
@@ -19,6 +22,8 @@ class GameFlow
 
   def start
     welcome
+    load_or_new
+    puts "New Game!\n\nType save at the start of any guess to save your game."
     board.print_board
     loop do
       player_turn
@@ -28,6 +33,13 @@ class GameFlow
   end
 
   private
+
+  def save_game
+    puts 'Name your saved game. No spaces.'
+    filename = gets.chomp
+    to_yaml(filename)
+    puts 'Your game has been saved!'
+  end
 
   def player_turn
     turn_information
@@ -139,7 +151,7 @@ class GameFlow
   def perform_castling
     if @board.castle_short_move_available?(color)
       @piece_mover.perform_short_castle(color)
-    elsif @board.castle_long_move_available(color)
+    elsif @board.castle_long_move_available?(color)
       @piece_mover.perform_long_castle(color)
     else
       puts 'Castling is not available'
@@ -182,6 +194,7 @@ class GameFlow
 
   def check_start_input
     input = gets.chomp
+    save_game if input.downcase == 'save'
     alg_cleared = check_alg_input(input)
 
     until check_piece_color(alg_cleared)

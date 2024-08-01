@@ -13,6 +13,8 @@ require_relative 'lib/pieces/queen'
 require_relative 'lib/pieces/empty_piece'
 require_relative 'lib/game_flow'
 require_relative 'lib/check_status'
+require_relative 'lib/serialize'
+require 'yaml'
 
 board = Board.new
 piece_mover = PieceMover.new(board)
