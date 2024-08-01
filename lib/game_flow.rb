@@ -6,13 +6,14 @@ require_relative 'board'
 require_relative 'check_status'
 require_relative 'serialize'
 
+# handles the flow of game logic
 class GameFlow
   include Serialize
 
-  attr_reader :board, :piece_mover, :coordinate_converter, :check_status, :count
+  attr_reader :board, :piece_mover, :coordinate_converter, :check_status
   attr_accessor :color
 
-  def initialize(board, piece_mover, coordinate_converter, check_status, _count = 0)
+  def initialize(board, piece_mover, coordinate_converter, check_status)
     @board = board
     @piece_mover = piece_mover
     @coordinate_converter = coordinate_converter
@@ -20,11 +21,9 @@ class GameFlow
     @color = :white
   end
 
+  # runs game
   def start
     welcome
-    load_or_new
-    puts "New Game!\n\nType save at the start of any move to save your game."
-    board.print_board
     loop do
       player_turn
       toggle_color
@@ -36,8 +35,7 @@ class GameFlow
 
   def save_game
     puts 'Name your saved game. No spaces.'
-    filename = gets.chomp
-    to_yaml(filename)
+    to_yaml(gets.chomp)
     puts 'Your game has been saved!'
   end
 
@@ -45,13 +43,15 @@ class GameFlow
     turn_information
     turn_check_status
     turn_piece_selection
-    board.increment_count
     board.print_board
   end
 
   def welcome
     puts "Welcome to Chess!\n\n"
     puts "Player 1 is white, and Player 2 is black.\n\n"
+    load_or_new
+    puts "New Game!\n\nType save at the start of any move to save your game."
+    board.print_board
   end
 
   def turn_information
@@ -67,14 +67,25 @@ class GameFlow
   end
 
   def turn_piece_selection
-    print "#{color.capitalize}, select a piece: "
-    start_point = check_start_input
-    print 'Select an end point: '
-    end_point = check_alg_input(gets.chomp)
+    start_point = select_start_point
+    end_point = select_end_point
+    check_special_moves(start_point, end_point)
+  end
 
+  def select_start_point
+    print "#{color.capitalize}, select a piece: "
+    check_start_input
+  end
+
+  def select_end_point
+    print 'Select an end point: '
+    check_alg_input(gets.chomp)
+  end
+
+  # checks for pawn promotion and castling
+  def check_special_moves(start_point, end_point)
     if pawn?(start_point) && promotion_possible?(color, end_point)
       move_piece(start_point, end_point)
-      p 'about to aske_for_promotion'
       ask_for_promotion(end_point, color)
     elsif king_or_rook?(start_point) && castling_possible?(start_point, end_point)
       ask_for_castling(start_point, end_point)
@@ -92,39 +103,42 @@ class GameFlow
   end
 
   def ask_for_promotion(position, color)
-    puts "You're getting promoted!!"
-    puts "your color is #{color}"
-    puts 'Q - Queen, K - Knight, B - Bishop, R - Rook'
-    input = gets.chomp.downcase
-    piece_selected =
-      case input
-      when 'q'
-        'Queen'
-      when 'k'
-        'Knight'
-      when 'b'
-        'Bishop'
-      when 'r'
-        'Rook'
-      else
-        ask_for_promotion(color)
-      end
-    p "you selected: #{piece_selected}"
+    input = prompt_for_promotion_pick(color)
+    piece_selected = select_a_piece(input)
     perform_promotion(position, color, piece_selected)
   end
 
+  # takes user input and runs ask_for_promotion if invalid input
+  def select_a_piece(input)
+    piece_names = {
+      'q' => 'Queen',
+      'k' => 'Knight',
+      'b' => 'Bishop',
+      'r' => 'Rook'
+    }
+
+    piece_names[input] || ask_for_promotion(color)
+  end
+
+  def prompt_for_promotion_pick(color)
+    puts "You're getting promoted!!"
+    puts "your color is #{color}"
+    puts 'Q - Queen, K - Knight, B - Bishop, R - Rook'
+    gets.chomp.downcase
+  end
+
   def perform_promotion(position, color, piece_selected)
-    piece =
-      case piece_selected
-      when 'Queen'
-        Queen.new(color, position, board)
-      when 'Knight'
-        Knight.new(color, position, board)
-      when 'Bishop'
-        Bishop.new(color, position, board)
-      when 'Rook'
-        Rook.new(color, position, board)
-      end
+    piece_classes = {
+      'Queen' => Queen,
+      'Knight' => Knight,
+      'Bishop' => Bishop,
+      'Rook' => Rook
+    }
+
+    piece_class = piece_classes[piece_selected]
+    return unless piece_class
+
+    piece = piece_class.new(color, position, board)
     @board.place_piece(piece, position)
   end
 
@@ -164,12 +178,8 @@ class GameFlow
   # actually moves piece
   def check_for_check(start_point, end_point)
     # loop to check for check
-    # p 'Running check for check in GameFlow'
     loop do
-      # p 'moving piece...'
       move_piece(start_point, end_point) # move the piece
-
-      # p "checkstatus: #{check_status.check?(color)}"
 
       break unless check_status.check?(color) # stop here unless the move would put your king in check
 
@@ -228,37 +238,3 @@ class GameFlow
     piece_mover.move_piece(start_position, end_position)
   end
 end
-
-# # GameFlow Class Goals
-
-# [x] Manage Turn Sequence
-#   [x] Alternate turns between players.
-#   [x] Keep track of which player's turn it is.
-
-# [ ] Handle Move Execution
-#   [x] Validate the move according to the rules of chess.
-#   [x] Update the board with the new piece positions.
-#   [ ] Handle special moves (e.g., castling, en passant).
-
-# [x] Validate Moves
-#   [x] Check if a move is legal based on piece type and current board state.
-#   [x] Ensure that moves do not put the player's king in check.
-
-# [x] Check Game Status
-#   [x] Determine if the game has ended (checkmate, stalemate).
-#   [x] Handle game-ending conditions and notify players.
-
-# [x] Handle Player Input
-#   [x] Interpret player commands and translate them into moves.
-#   [x] Provide feedback to players on invalid moves or game status.
-
-# [x] Maintain Game State
-#   [x] Keep track of the current game state (e.g., active pieces, board configuration).
-#   [x] Manage game history (optional, for undo/redo functionality).
-
-# [x] Interface with Other Classes
-#   [x] Coordinate with the `Board` class to update and query the board state.
-#   [x] Utilize `Piece` classes to validate and execute piece-specific moves.
-
-# [x] Provide Game Status Information
-#   [x] Display current game status (e.g., which player’s turn it is, if a player is in check).

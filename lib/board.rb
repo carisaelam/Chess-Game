@@ -34,74 +34,25 @@ class Board
     @board = initialize_board
     starting_positions
     @piece_mover = PieceMover.new(self)
-    @count = 1
   end
 
+  # calls check_castle_move for short castle
   def castle_short_move_available?(color)
-    if color == :white
-      piece_at([7, 7]).color == :white &&
-        piece_at([7, 7]).instance_of?(Rook) &&
-        piece_at([7, 6]).color == :empty &&
-        piece_at([7, 5]).color == :empty &&
-        piece_at([7, 4]).color == :white &&
-        piece_at([7, 4]).instance_of?(King)
-    else
-      piece_at([0, 7]).color == :black &&
-        piece_at([0, 7]).instance_of?(Rook) &&
-        piece_at([0, 6]).color == :empty &&
-        piece_at([0, 5]).color == :empty &&
-        piece_at([0, 4]).color == :black &&
-        piece_at([0, 4]).instance_of?(King)
-    end
+    check_castle_move(color, short: true)
   end
 
+  # calls check_castle_move for long castle
   def castle_long_move_available?(color)
-    if color == :white
-      piece_at([7, 0]).color == :white &&
-        piece_at([7, 0]).instance_of?(Rook) &&
-        piece_at([7, 1]).color == :empty &&
-        piece_at([7, 2]).color == :empty &&
-        piece_at([7, 3]).color == :empty &&
-        piece_at([7, 4]).color == :white &&
-        piece_at([7, 4]).instance_of?(King)
-    else
-      piece_at([0, 0]).color == :black &&
-        piece_at([0, 0]).instance_of?(Rook) &&
-        piece_at([0, 1]).color == :empty &&
-        piece_at([0, 2]).color == :empty &&
-        piece_at([0, 3]).color == :empty &&
-        piece_at([0, 4]).color == :black &&
-        piece_at([0, 4]).instance_of?(King)
-    end
+    check_castle_move(color, short: false)
   end
 
+  # helper method for pawn promotion
   def promotion_possible?(color, end_position)
-    p 'running promotion possible'
-    end_position[0] == if color == :white
-                         0
-                       else
-                         BOARD_SIZE - 1
-                       end
+    promotion_row = color == :black ? 7 : 0
+    end_position[0] == promotion_row
   end
 
-  # DELETE THIS METHOD
-  # def print_board_contents
-  #   p 'PRINTING BOARD CONTENTS'
-  #   board.each_with_index do |row, i|
-  #     row.each_with_index do |square, j|
-  #       p "Position [#{i}, #{j}] - Color: #{square[0]}, Piece: #{square[1].class}"
-  #     end
-  #   end
-  # end
-
-  def increment_count
-    @count += 1
-  end
-
-  def current_count
-    @count
-  end
-
+  # places piece on board at given position and updates its position variable
   def place_piece(piece, new_position)
     raise "Expected Piece, got #{piece.class}" unless piece.is_a?(Piece)
 
@@ -109,13 +60,14 @@ class Board
     piece.update_position(new_position)
   end
 
+  # returns the piece at a given position
   def piece_at(position)
-    # p "runing piece at: #{position}"
     raise ArgumentError, 'Invalid position' unless valid_position?(position)
 
     board[position[0]][position[1]][1]
   end
 
+  # checks that position is an array and is on the board
   def valid_position?(position)
     position.is_a?(Array) && position.length == 2 && position.all? do |coord|
       coord.is_a?(Integer) && coord.between?(0, 7)
@@ -146,30 +98,63 @@ class Board
 
   private
 
+  # checks if a castle move is available
+  def check_castle_move(color, short:)
+    row = color == :white ? 7 : 0
+    king_col = 4
+    rook_col = short ? 7 : 0
+    empty_cols = short ? [6, 5] : [1, 2, 3]
+
+    rook_valid?(color, row, rook_col) &&
+      empty_cols.all? { |col| empty?(row, col) } &&
+      king_valid?(color, row, king_col)
+  end
+
+  # helper method for check_castle_move
+  def rook_valid?(color, row, col)
+    piece_at([row, col]).color == color &&
+      piece_at([row, col]).instance_of?(Rook)
+  end
+
+  # helper method for check_castle_move
+  def empty?(row, col)
+    piece_at([row, col]).color == :empty
+  end
+
+  # helper method for check_castle_move
+  def king_valid?(color, row, col)
+    piece_at([row, col]).color == color &&
+      piece_at([row, col]).instance_of?(King)
+  end
+
   # sets pieces in their starting positions based on color
   def setup_pieces(color)
-    case color
-    when :black
-      back_row = 0
-      front_row = 1
-    when :white
-      back_row = 7
-      front_row = 6
-    else
-      # Skip setup if color is :empty
-      return
-    end
-    place_piece(Rook.new(color, [back_row, 0], self), [back_row, 0])
-    place_piece(Knight.new(color, [back_row, 1], self), [back_row, 1])
-    place_piece(Bishop.new(color, [back_row, 2], self), [back_row, 2])
-    place_piece(Queen.new(color, [back_row, 3], self), [back_row, 3])
-    place_piece(King.new(color, [back_row, 4], self), [back_row, 4])
-    place_piece(Bishop.new(color, [back_row, 5], self), [back_row, 5])
-    place_piece(Knight.new(color, [back_row, 6], self), [back_row, 6])
-    place_piece(Rook.new(color, [back_row, 7], self), [back_row, 7])
+    back_row, front_row = case color
+                          when :black then [0, 1]
+                          when :white then [7, 6]
+                          else return
+                          end
 
+    place_back_row_pieces(color, back_row)
+    place_pawns(color, front_row)
+    fill_empty_pieces
+  end
+
+  # places correct color pawns on correct row depending on color
+  def place_pawns(color, front_row)
     BOARD_SIZE.times { |i| place_piece(Pawn.new(color, [front_row, i], self), [front_row, i]) }
+  end
 
+  # places correct pieces on back row depending on color
+  def place_back_row_pieces(color, back_row)
+    piece_classes = [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
+    piece_classes.each_with_index do |piece_class, i|
+      place_piece(piece_class.new(color, [back_row, i], self), [back_row, i])
+    end
+  end
+
+  # fills rows 2-5 with empty pieces
+  def fill_empty_pieces
     [2, 3, 4, 5].each do |row|
       BOARD_SIZE.times { |i| place_piece(EmptyPiece.new, [row, i]) }
     end
@@ -187,28 +172,8 @@ class Board
     Array.new(BOARD_SIZE) { |i| build_row(i.even? ? 'even' : 'odd') }
   end
 
-  # Returns the ANSI color code for the dark squares on the board
-  def dark
-    DARK_COLOR
-  end
-
-  # Returns the ANSI color code for the lights squares on the board
-  def light
-    LIGHT_COLOR
-  end
-
-  # Returns a hash of Unicode symbols representing the chess pieces.
-  def chess_pieces
-    CHESS_PIECES
-  end
-
   # formats and prints one square
   def print_square(square)
-    # puts "DEBUG: square=#{square.class}"
-    # puts "square color is: #{square[0]}"
-    # puts "square [1] is a : #{square[1].color} #{square[1].class}"
-    # puts
-
     color = square[0]
 
     piece_code = if square[1].is_a?(Piece)
@@ -227,9 +192,9 @@ class Board
   # assigns color to a square base on index and row_order
   def color_for_square(index, row_order)
     if (row_order == 'odd' && index.even?) || (row_order != 'odd' && index.odd?)
-      dark
+      DARK_COLOR
     else
-      light
+      LIGHT_COLOR
     end
   end
 
