@@ -2,6 +2,8 @@
 
 Welcome to the Chess Game project! This command-line chess game is built using Ruby and adheres to SOLID object-oriented design principles. It allows players to enjoy classic chess gameplay with features like move validation, castling, and more. This project served as the final assignment for the Ruby course in [The Odin Project](https://www.theodinproject.com). 
 
+Play live here: https://replit.com/@carisaelam/Chess-Game?v=1
+
 ![Chessboard Preview Image](chessboard_preview.png)
 
 ## Features
