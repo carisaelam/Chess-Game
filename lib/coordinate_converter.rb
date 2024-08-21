@@ -34,6 +34,8 @@ class CoordinateConverter
     [square_coordinates[string[1]], square_coordinates[string[0]]]
   end
 
+  private
+
   def process_coordinate_input(input)
     [input[0], input[1]]
   end
