@@ -48,6 +48,8 @@ class GameFlow
 
   def welcome
     puts "Welcome to Chess!\n\n"
+    puts "Select pieces by typing in coordinates letter first (ex. 'a2', 'e7', 'c8')."
+    puts "First, select the piece you want to move. Then, select the square you want to move it to.\n\n"
     puts "Player 1 is white, and Player 2 is black.\n\n"
     load_or_new
     puts "New Game!\n\nType save at the start of any move to save your game."
